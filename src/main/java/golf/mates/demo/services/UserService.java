@@ -3,7 +3,9 @@ package golf.mates.demo.services;
 
 import golf.mates.demo.dtos.request.UserRegistrationDto;
 import golf.mates.demo.dtos.responses.UserInfoDto;
+import golf.mates.demo.entities.Location;
 import golf.mates.demo.entities.User;
+import golf.mates.demo.repositories.LocationRepository;
 import golf.mates.demo.repositories.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService {
 
+    private final LocationRepository locationRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
 
@@ -31,7 +34,7 @@ public class UserService {
     }
 
     public void registerNewUser(UserRegistrationDto userRegistrationDto) {
-        User user = Mapper.userRegistrationDtoToUser(userRegistrationDto, encoder);
+        User user = Mapper.userRegistrationDtoToUser(userRegistrationDto, encoder, locationRepository);
         userRepository.save(user);
     }
 
@@ -83,9 +86,11 @@ public class UserService {
     private static class Mapper {
         private Mapper(){}
 
-        private static User userRegistrationDtoToUser(UserRegistrationDto userRegistrationDto, PasswordEncoder encoder) {
+        private static User userRegistrationDtoToUser(UserRegistrationDto userRegistrationDto, PasswordEncoder encoder, LocationRepository locationRepository) {
             User user = new User(userRegistrationDto);
             user.setPassword(encoder.encode(user.getPassword()));
+            Location location = locationRepository.findById(userRegistrationDto.getLocationId()).get();
+            user.setLocation(location);
             return user;
         }
 

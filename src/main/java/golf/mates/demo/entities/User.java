@@ -35,10 +35,8 @@ public class User {
     @OneToMany(mappedBy = "bookedUser", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<BookedSlot> BookedSlots = new LinkedHashSet<>();
 
-
-
     @OneToMany(mappedBy = "receiver")
-    private List<Message> messagesRecived;
+    private List<Message> messagesReceived;
 
     @OneToMany(mappedBy = "sender")
     private List<Message> messagesSended;
@@ -56,7 +54,7 @@ public class User {
     private Timestamp createdDate;
     @UpdateTimestamp
     private Timestamp lastModifiedDate;
-    private String role;
+    private String role = "ROLE_USER";
 
     @ManyToOne
     @JoinColumn(name = "golf_club_id")
