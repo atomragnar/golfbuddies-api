@@ -24,6 +24,9 @@ public class GolfClub {
     @JoinColumn(name = "location_id", nullable = false)
     private Location location;
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "golfClub")
+    private Set<User> users = new LinkedHashSet<>();
+
     public GolfClub(String club, Location location) {
         this.club = club;
         this.location = location;
@@ -31,6 +34,10 @@ public class GolfClub {
 
     public void setLocation(Location location) {
 
+    }
+
+    public boolean isNew() {
+        return this.id == null;
     }
 
 

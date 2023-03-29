@@ -42,4 +42,8 @@ public class PlayAd {
     @OneToMany(mappedBy = "playAd", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<BookedSlot> BookedSlots = new LinkedHashSet<>();
 
+    public boolean isNew() {
+        return this.id == null;
+    }
+
 }

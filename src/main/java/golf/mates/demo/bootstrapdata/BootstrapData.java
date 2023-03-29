@@ -79,13 +79,17 @@ public class BootstrapData implements CommandLineRunner {
         GolfClub golfClub3 = golfClubRepository.findById(100L).get();
 
 
-        User user1 = new User("user1", encoder.encode("password"), location1);
-        User user2 = new User("user2", encoder.encode("password"), location2);
-        User user3 = new User("user3", encoder.encode("password"), location3);
+        User user1 = new User("user1", encoder.encode("password"), location1, golfClub1);
+        User user2 = new User("user2", encoder.encode("password"), location2, golfClub2);
+        User user3 = new User("user3", encoder.encode("password"), location3, golfClub3);
 
         userRepository.save(user1);
         userRepository.save(user2);
         userRepository.save(user3);
+
+        golfClubRepository.save(golfClub1);
+        golfClubRepository.save(golfClub2);
+        golfClubRepository.save(golfClub3);
 
     }
 

@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.UUID;
 
 public class SecurityUser implements UserDetails {
@@ -19,10 +20,12 @@ public class SecurityUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.stream(user.getRole()
+        return Collections.singleton(new SimpleGrantedAuthority(user.getRole()));
+
+               /* Arrays.stream(user.getRole()
                         .split(","))
                 .map(SimpleGrantedAuthority::new)
-                .toList();
+                .toList();*/
     }
 
     public Long getUserId() {

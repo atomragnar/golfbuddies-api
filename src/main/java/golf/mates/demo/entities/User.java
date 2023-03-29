@@ -35,9 +35,7 @@ public class User {
     @OneToMany(mappedBy = "bookedUser", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<BookedSlot> BookedSlots = new LinkedHashSet<>();
 
-    @ManyToOne()
-    @JoinColumn(name = "golf_club_id")
-    private GolfClub golfClub;
+
 
     @OneToMany(mappedBy = "receiver")
     private List<Message> messagesRecived;
@@ -60,6 +58,9 @@ public class User {
     private Timestamp lastModifiedDate;
     private String role;
 
+    @ManyToOne
+    @JoinColumn(name = "golf_club_id")
+    private GolfClub golfClub;
 
     public User(String username, String password) {
         this.username = username;
@@ -80,13 +81,18 @@ public class User {
         this.password = userRegistrationDto.getPassword();
     }
 
-    public User(String username, String password, String role) {
+    public User(String username, String password, Location location, GolfClub golfClub) {
         this.username = username;
         this.password = password;
-        this.role = role;
+        this.location = location;
+        setGolfClub(golfClub);
+        this.role = "ROLE_USER";
     }
 
-
+    public void setGolfClub(GolfClub golfClub) {
+        this.golfClub = golfClub;
+        golfClub.getUsers().add(this);
+    }
 
     public boolean isNew() {
         return this.id == null;

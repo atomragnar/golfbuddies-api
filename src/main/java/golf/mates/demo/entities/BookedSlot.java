@@ -24,4 +24,8 @@ public class BookedSlot {
     @JoinColumn(name = "user_id")
     private User bookedUser;
 
+    public boolean isNew() {
+        return this.id == null;
+    }
+
 }
