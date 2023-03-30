@@ -83,7 +83,9 @@ public class BootstrapData implements CommandLineRunner {
         User user1 = new User("user1", encoder.encode("password"), location1, golfClub1);
         User user2 = new User("user2", encoder.encode("password"), location2, golfClub2);
         User user3 = new User("user3", encoder.encode("password"), location3, golfClub3);
-
+        user1.setHandicap(2.4);
+        user2.setHandicap(4.55);
+        user3.setHandicap(23.14);
         userRepository.save(user1);
         userRepository.save(user2);
         userRepository.save(user3);
