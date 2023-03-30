@@ -53,7 +53,7 @@ public class SecurityConfig {
 
         return httpSecurity
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/authenticate", "/register", "/").permitAll()
+                        .requestMatchers("/**").permitAll()
                         .requestMatchers(PathRequest.toH2Console()).permitAll() //
                         .requestMatchers(HttpMethod.OPTIONS,"/**").hasRole("USER")
                         .anyRequest()
