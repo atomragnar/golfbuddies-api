@@ -31,7 +31,7 @@ public class BootstrapData implements CommandLineRunner {
     }
 
     private void loadData() throws IOException {
-        File file = ResourceUtils.getFile("classpath:csvdata/golfklubbar_lista.csv");
+        File file = ResourceUtils.getFile("classpath:csvdata/golfdata.csv");
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
 
@@ -42,6 +42,7 @@ public class BootstrapData implements CommandLineRunner {
             while((line = br.readLine()) != null) {
                 String[] golfClubData = line.split(";");
                 String landskap = golfClubData[1].replaceAll("GDF", "").trim();
+                System.out.println(landskap);
                 golfClubs.put(golfClubData[0], landskap);
                 landskapsSet.add(landskap);
             }
