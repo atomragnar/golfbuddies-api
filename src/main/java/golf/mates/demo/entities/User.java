@@ -77,6 +77,7 @@ public class User {
     public User(UserRegistrationDto userRegistrationDto) {
         this.username = userRegistrationDto.getUsername();
         this.password = userRegistrationDto.getPassword();
+        this.handicap = userRegistrationDto.getHandicap();
     }
 
     public User(String username, String password, Location location, GolfClub golfClub) {
