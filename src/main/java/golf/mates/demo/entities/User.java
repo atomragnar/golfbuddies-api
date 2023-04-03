@@ -24,22 +24,33 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String email;
     private String username;
     @JsonIgnore
     private String password;
     private double handicap;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "location_id")
     private Location location;
 
-    @OneToMany(mappedBy = "bookedUser", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private Set<BookedSlot> BookedSlots = new LinkedHashSet<>();
+    @Column(name = "location_id", insertable = false, updatable = false)
+    private Long locationId;
+    @JsonIgnore
+    @OneToMany(mappedBy = "player", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private Set<PlayAdSlot> playAdSlots = new LinkedHashSet<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "user1", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Conversation> conversations1 = new ArrayList<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "user2", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Conversation> conversations2 = new ArrayList<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Message> messagesSent = new ArrayList<>();
 
-    @OneToMany(mappedBy = "receiver")
-    private List<Message> messagesReceived;
-
-    @OneToMany(mappedBy = "sender")
-    private List<Message> messagesSended;
+    @JsonIgnore
+    @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Message> messagesReceived = new ArrayList<>();
 
     @JsonIgnore
     private boolean accountExpired = false;
@@ -56,36 +67,28 @@ public class User {
     private Timestamp lastModifiedDate;
     private String role = "ROLE_USER";
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "golf_club_id")
     private GolfClub golfClub;
-
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-        this.role = "ROLE_USER";
-    }
-
-    public User(String username, String password, Location location) {
-        this.username = username;
-        this.password = password;
-        this.location = location;
-        this.role = "ROLE_USER";
-    }
 
 
     public User(UserRegistrationDto userRegistrationDto) {
         this.username = userRegistrationDto.getUsername();
         this.password = userRegistrationDto.getPassword();
+        this.locationId = userRegistrationDto.getLocationId();
+        this.handicap = userRegistrationDto.getHandicap();
     }
 
-    public User(String username, String password, Location location, GolfClub golfClub) {
+    public User(String email, String username, String password, Location location, GolfClub golfClub) {
+        this.email = email;
         this.username = username;
         this.password = password;
         this.location = location;
         setGolfClub(golfClub);
         this.role = "ROLE_USER";
     }
+
 
     public void setGolfClub(GolfClub golfClub) {
         this.golfClub = golfClub;

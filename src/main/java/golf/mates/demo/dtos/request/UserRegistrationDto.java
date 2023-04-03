@@ -13,8 +13,7 @@ public class UserRegistrationDto {
     @NotBlank
     private String password;
     private double handicap;
-    private Long locationId;
-
+    private long locationId;
 
 
 }

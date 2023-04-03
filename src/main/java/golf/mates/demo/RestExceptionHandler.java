@@ -20,7 +20,6 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
-
 @Slf4j
 @RestControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {

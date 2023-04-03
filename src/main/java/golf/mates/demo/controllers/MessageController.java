@@ -8,13 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/messages")
 @RequiredArgsConstructor
@@ -23,7 +21,7 @@ public class MessageController {
     private final MessageService messageService;
 
 
-    @GetMapping("/{username}/received")
+   /* @GetMapping("/{username}/received")
     public ResponseEntity<List<Message>> getReceivedMessagesByUser(@PathVariable("username") @NotBlank String username) {
         return new ResponseEntity<>(messageService.getMessagesReceivedByUser(username), HttpStatus.OK);
     }
@@ -31,6 +29,6 @@ public class MessageController {
     @GetMapping("/{username}/sent")
     public ResponseEntity<List<Message>> getSentMessagesByUser(@PathVariable("username") @NotBlank String username) {
         return new ResponseEntity<>(messageService.getMessagesSentFromUser(username), HttpStatus.OK);
-    }
+    }*/
 
 }

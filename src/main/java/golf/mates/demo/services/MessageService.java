@@ -1,49 +1,50 @@
 package golf.mates.demo.services;
 
+import golf.mates.demo.entities.Conversation;
 import golf.mates.demo.entities.Message;
 import golf.mates.demo.repositories.MessageRepository;
-import lombok.RequiredArgsConstructor;
+
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.http.HttpStatus;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
+
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 @Slf4j
 public class MessageService {
     private final MessageRepository messageRepository;
+    private final ConversationService conversationService;
 
-
-    public List<Message> getMessagesSentFromUser(String username) {
-
-        // TODO: 2023-03-28 behöver addera validering av username to be sure.
-        List<Message> messageList = messageRepository.findBySender_UsernameIgnoreCaseOrderByCreatedDateDesc(username);
-
-        if (!messageList.isEmpty()) {
-            return messageList;
-        } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
-
+    public MessageService(MessageRepository messageRepository, ConversationService conversationService) {
+        this.messageRepository = messageRepository;
+        this.conversationService = conversationService;
     }
 
-    public List<Message> getMessagesReceivedByUser(String username) {
 
-        // TODO: 2023-03-28 behöver addera validering av username to be sure.
-        List<Message> messageList = messageRepository.findByReceiver_UsernameIgnoreCaseOrderByCreatedDateDesc(username);
-
-        if (!messageList.isEmpty()) {
-            return messageList;
-        } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
-
+    public Message save(Message message) {
+        return messageRepository.save(message);
     }
+
+    public Message createMessage(Long conversationId, Message message) {
+        // Find the conversation by ID
+        Conversation conversation = conversationService.findConversationById(conversationId);
+
+        // Add the message to the conversation's messages collection
+        conversation.getMessages().add(message);
+
+        // Set the conversation on the message
+        message.setConversation(conversation);
+
+        // Save the message and return it
+        return messageRepository.save(message);
+    }
+
+
+
+
 
 }

@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.stream.Collectors;
 
+import golf.mates.demo.security.SecurityUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -35,6 +36,7 @@ public class JwtTokenService {
                 .expiresAt(Instant.now().plus(90, ChronoUnit.MINUTES))
                 .subject(authentication.getName())
                 .claim("scope", scope)
+                .claim("userId", ((SecurityUser) authentication.getPrincipal()).getUserId())
                 .build();
 
         return this.jwtEncoder

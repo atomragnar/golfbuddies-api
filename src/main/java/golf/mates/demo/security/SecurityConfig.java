@@ -7,6 +7,8 @@ import golf.mates.demo.services.CustomUserDetailsService;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
@@ -24,6 +26,8 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
+import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
+import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
 
 import java.security.KeyPair;
@@ -34,14 +38,21 @@ import java.security.interfaces.RSAPublicKey;
 
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.proc.SecurityContext;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.UUID;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
+
+// TODO lägg till olika profiler för denna configen, förenklar att köra tester mot frontend
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
+
+    private static final String SALT = "myCustomSalt";
 
     private final CustomUserDetailsService myUserDetailsService;
 
@@ -50,31 +61,59 @@ public class SecurityConfig {
     }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-
         return httpSecurity
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/authenticate", "/register", "/").permitAll()
-                        .requestMatchers(PathRequest.toH2Console()).permitAll() //
-                        .requestMatchers(HttpMethod.OPTIONS,"/**").hasRole("USER")
+                        .requestMatchers(PathRequest.toH2Console()).permitAll()
+                        /*.requestMatchers("/register", "/authenticate").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")*/
                         .anyRequest()
-                        .authenticated())
+                        .permitAll()
+                )
+                // TODO justera med endast origin för h2 senare.
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.
-                        sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+                        sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(
                         OAuth2ResourceServerConfigurer::jwt)
                 .httpBasic(
-                        Customizer.withDefaults())
+                        withDefaults())
                 .headers(header -> {
                     header.frameOptions().sameOrigin();
                 })
                 .build();
     }
 
+
+/*
+    @Order(Ordered.HIGHEST_PRECEDENCE)
+    @Bean
+    SecurityFilterChain tokenSecurityFilterChain(HttpSecurity http) throws Exception {
+        return http
+                .authorizeHttpRequests( auth -> auth
+                        .requestMatchers(new AntPathRequestMatcher("/authenticate")).permitAll()
+                        .anyRequest().authenticated()
+                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .csrf(AbstractHttpConfigurer::disable)
+                .exceptionHandling(ex -> {
+                    ex.authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint());
+                    ex.accessDeniedHandler(new BearerTokenAccessDeniedHandler());
+                })
+                .httpBasic(withDefaults())
+                .build();
+    }
+*/
+
+
+
+
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder;
     }
+
+
 
     @Bean
     public AuthenticationManager authenticationManager() {

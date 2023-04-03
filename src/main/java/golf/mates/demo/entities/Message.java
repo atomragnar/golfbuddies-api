@@ -1,9 +1,6 @@
 package golf.mates.demo.entities;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -12,23 +9,21 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Messages")
+@Table(name = "messages")
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "sender")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "conversation_id", nullable = false)
+    private Conversation conversation;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sender_id", nullable = false)
     private User sender;
-
-    @ManyToOne
-    @JoinColumn(name = "receiver")
-    private User receiver;
-
-    @Column(name = "message")
-    String message;
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "recipient_id", nullable = false)
+    private User recipient;
+    String content;
     @CreationTimestamp
     @Column(updatable = false)
     private Timestamp createdDate;
@@ -51,20 +46,40 @@ public class Message {
         this.sender = sender;
     }
 
-    public User getReceiver() {
-        return receiver;
+    public Conversation getConversation() {
+        return conversation;
     }
 
-    public void setReceiver(User receiver) {
-        this.receiver = receiver;
+    public User getRecipient() {
+        return recipient;
     }
 
-    public String getMessage() {
-        return message;
+    public void setRecipient(User recipient) {
+        this.recipient = recipient;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public Timestamp getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Timestamp createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Timestamp getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Timestamp lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public boolean isNew() {
@@ -82,5 +97,10 @@ public class Message {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    public void setConversation(Conversation conversation) {
+        this.conversation = conversation;
+        conversation.getMessages().add(this);
     }
 }

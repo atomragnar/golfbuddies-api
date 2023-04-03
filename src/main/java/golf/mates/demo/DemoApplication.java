@@ -3,7 +3,6 @@ package golf.mates.demo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -15,16 +14,17 @@ public class DemoApplication {
 	}
 
 
-
 	@Bean
 	public WebMvcConfigurer corsConfigurer() {
 		return new WebMvcConfigurer() {
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
-						.allowedMethods("*")
-						.allowedOrigins("http://localhost:3000");
+						.allowedOrigins("http://localhost:3000")
+//						.allowedMethods("GET", "POST", "PUT", "DELETE");
+						.allowedMethods("*");
 			}
 		};
 	}
+
 
 }

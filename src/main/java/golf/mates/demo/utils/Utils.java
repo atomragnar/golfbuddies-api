@@ -1,12 +1,16 @@
 package golf.mates.demo.utils;
 
 import golf.mates.demo.security.SecurityUser;
+import org.springframework.beans.factory.config.PropertiesFactoryBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.UUID;
 
 public class Utils {
+
 
     public static class UserUtils {
         private UserUtils() {

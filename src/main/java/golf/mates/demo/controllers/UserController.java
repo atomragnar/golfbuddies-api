@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/users/")
 @RequiredArgsConstructor
@@ -37,7 +38,7 @@ public class UserController {
     }
 
     @PutMapping("update/{username}/info")
-    public ResponseEntity<Object> updateUserInfo(@PathVariable String username) {
+    public ResponseEntity<Object> updateUserInfo(@RequestBody UserInfoDto userInfoDto, @PathVariable String username) {
         return null;
     }
 

@@ -3,19 +3,18 @@ package golf.mates.demo.services;
 
 import golf.mates.demo.dtos.request.UserRegistrationDto;
 import golf.mates.demo.dtos.responses.UserInfoDto;
-import golf.mates.demo.entities.Location;
+
 import golf.mates.demo.entities.User;
+import golf.mates.demo.mapper.UserMapper;
 import golf.mates.demo.repositories.LocationRepository;
 import golf.mates.demo.repositories.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -24,18 +23,19 @@ public class UserService {
 
     private final LocationRepository locationRepository;
     private final UserRepository userRepository;
-    private final PasswordEncoder encoder;
+
 
     public List<UserInfoDto> getAllUsers() {
-        return userRepository.findAll()
-                .stream()
-                .map(Mapper::UserToUserInfoDto)
-                .collect(Collectors.toList());
+        return UserMapper.toInfoDtoList(userRepository.findAll());
     }
 
     public void registerNewUser(UserRegistrationDto userRegistrationDto) {
-        User user = Mapper.userRegistrationDtoToUser(userRegistrationDto, encoder, locationRepository);
+        User user = UserMapper.toEntity(userRegistrationDto);
         userRepository.save(user);
+    }
+
+    public User findUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     public boolean existsByUsername(String username) {
@@ -43,72 +43,38 @@ public class UserService {
     }
 
     public UserInfoDto getUserInfo(String username) {
-        return Mapper.UserToUserInfoDto(
+        return UserMapper.toInfoDto(
                 userRepository.findByUsernameIgnoreCase(username)
                         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND))
         );
     }
 
-    public List<UserInfoDto> findUserByLocationId(Long locationId) {
-        List<User> users = userRepository.findByLocation_IdOrderByUsernameAsc(locationId);
-
-        // TODO add check that the request is a valid location
-
+    private List<UserInfoDto> getInfoDtoListOrNotFound(List<User> users) {
         if (!users.isEmpty()) {
-            return users.stream()
-                    .map(Mapper::UserToUserInfoDto)
-                    .collect(Collectors.toList());
+            return UserMapper.toInfoDtoList(users);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
+    }
 
+
+    public List<UserInfoDto> findUserByLocationId(Long locationId) {
+        List<User> users = userRepository.findByLocation_IdOrderByUsernameAsc(locationId);
+        // TODO add check that the request is a valid location
+        return getInfoDtoListOrNotFound(users);
     }
 
     public List<UserInfoDto> findUserByGolfClubId(Long golfClubId) {
         List<User> users = userRepository.findByGolfClub_IdOrderByUsernameAsc(golfClubId);
-
         // TODO add check that the request is a valid golfClub
-
-        if (!users.isEmpty()) {
-            return users.stream()
-                    .map(Mapper::UserToUserInfoDto)
-                    .collect(Collectors.toList());
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
-
+        return getInfoDtoListOrNotFound(users);
     }
 
-
-
-
-
-    private static class Mapper {
-        private Mapper(){}
-
-        private static User userRegistrationDtoToUser(UserRegistrationDto userRegistrationDto, PasswordEncoder encoder, LocationRepository locationRepository) {
-            User user = new User(userRegistrationDto);
-            user.setPassword(encoder.encode(user.getPassword()));
-            Location location = locationRepository.findById(userRegistrationDto.getLocationId()).get();
-            user.setLocation(location);
-            return user;
-        }
-
-        private static UserInfoDto UserToUserInfoDto(User user) {
-            return new UserInfoDto(
-                user.getId().toString(),
-                    user.getUsername(),
-                    user.getLocation().getDistrict(),
-                    user.getHandicap()
-            );
-        }
-
+    public void deleteUserById(Long id) {
+        userRepository.deleteById(id);
     }
-
-
-
-
-
 
 
 }
+
+

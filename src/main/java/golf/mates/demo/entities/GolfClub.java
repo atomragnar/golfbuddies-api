@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -18,6 +19,7 @@ public class GolfClub {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String club;
 
     @ManyToOne(optional = false)
@@ -26,6 +28,10 @@ public class GolfClub {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "golfClub")
     private Set<User> users = new LinkedHashSet<>();
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "golfClub")
+    private Set<GolfCourse> courses = new LinkedHashSet<>();
+
 
     public GolfClub(String club, Location location) {
         this.club = club;
