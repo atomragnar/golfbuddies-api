@@ -1,5 +1,6 @@
 package golf.mates.demo.entities;
 
+import golf.mates.demo.dtos.request.PlayAdRegistrationDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,8 +25,8 @@ public class PlayAd {
     private Long id;
     private String adText;
     @ManyToOne
-    @JoinColumn(name = "golf_course_id")
-    private GolfCourse golfCourse;
+    @JoinColumn(name = "golf_club_id")
+    private GolfClub golfClub;
     private Timestamp playTime;
     private boolean hasCar;
     private int amoutOfSlots;
@@ -41,6 +42,13 @@ public class PlayAd {
 
     @OneToMany(mappedBy = "playAd", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<BookedSlot> BookedSlots = new LinkedHashSet<>();
+
+    public PlayAd(PlayAdRegistrationDto playAdRegistrationDto) {
+        this.playTime = playAdRegistrationDto.getTeeTime();
+        this.hasCar = playAdRegistrationDto.isHasCar();
+        this.amoutOfSlots = 4;
+        this.emptySlots = 3;
+    }
 
     public boolean isNew() {
         return this.id == null;
