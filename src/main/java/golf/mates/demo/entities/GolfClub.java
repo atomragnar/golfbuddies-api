@@ -1,5 +1,6 @@
 package golf.mates.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,6 +28,7 @@ public class GolfClub {
     private Location location;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "golfClub")
+    @JsonIgnore
     private Set<User> users = new LinkedHashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "golfClub")
@@ -41,7 +43,7 @@ public class GolfClub {
     public void setLocation(Location location) {
 
     }
-
+    @JsonIgnore
     public boolean isNew() {
         return this.id == null;
     }
