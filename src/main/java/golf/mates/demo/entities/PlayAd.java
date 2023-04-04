@@ -34,11 +34,15 @@ public class PlayAd {
     @Column(name = "golfClub_id", insertable = false, updatable = false)
     private Long golfClubId;
     @ManyToOne
+    @JoinColumn(name = "course_id")
+    private GolfCourse course;
+    @Column(name = "course_id", insertable = false, updatable = false)
+    private Long courseId;
+    @ManyToOne
     @JoinColumn(name = "location_id")
     private Location location;
     @Column(name = "location_id", insertable = false, updatable = false)
     private Long locationId;
-
     @OneToMany(mappedBy = "playAd", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PlayAdRequest> requests = new ArrayList<>();
 

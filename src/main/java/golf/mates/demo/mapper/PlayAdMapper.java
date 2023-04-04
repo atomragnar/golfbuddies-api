@@ -24,7 +24,13 @@ public class PlayAdMapper {
         PlayAdResponseDto responseDto = new PlayAdResponseDto();
         responseDto.setPlayAdId(playAd.getId());
         responseDto.setCreatorId(playAd.getCreator().getId());
+        responseDto.setCourseId(playAd.getCourseId());
+        responseDto.setGolfClubId(playAd.getGolfClubId());
+        responseDto.setLocationId(playAd.getLocationId());
         responseDto.setCreatorUsername(playAd.getCreator().getUsername());
+        responseDto.setCourse(playAd.getCourse().getCourse());
+        responseDto.setGolfClub(playAd.getGolfClub().getClub());
+        responseDto.setLocation(playAd.getLocation().getDistrict());
         responseDto.setBookedPlayers(
                 bookedPlayersArray(playAd.getSlots())
         );
@@ -50,6 +56,7 @@ public class PlayAdMapper {
 
     public static PlayAd requestToEntity(PlayAdRequestDto requestDto, User user) {
         PlayAd playAd = new PlayAd(user);
+        playAd.setCourseId(requestDto.getCourseId());
         playAd.setGolfClubId(requestDto.getGolfClubId());
         playAd.setLocationId(requestDto.getLocationId());
         return playAd;
