@@ -33,8 +33,8 @@ public class PlayAdSlot {
         return this.player == null;
     }
 
-    public boolean hasPlayer(User player) {
-        return this.player.equals(player);
+    public boolean hasPlayer(String username) {
+        return this.player.getUsername().equals(username);
     }
 
     public void removePlayer() {

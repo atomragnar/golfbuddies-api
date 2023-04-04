@@ -123,19 +123,19 @@ public class TestDataPopulator {
 
 
         // Create some test users
-        User frodo = new User("frodo@bagend.me", "Frodo Baggins", encoder.encode("password"), shire, hobbitonGolfClub);
+        User frodo = new User("frodo@bagend.me", "Frodo_Baggins", encoder.encode("password"), shire, hobbitonGolfClub);
         frodo.setHandicap(Math.round(Math.random() * 30 * 10.0) / 10.0);
 
-        User sam = new User("sam@bagend.me", "Samwise Gamgee", encoder.encode("password"), shire, hobbitonGolfClub);
+        User sam = new User("sam@bagend.me", "Samwise_Gamgee", encoder.encode("password"), shire, hobbitonGolfClub);
         sam.setHandicap(Math.round(Math.random() * 30 * 10.0) / 10.0);
 
         User gandalf = new User("gandalf@valinor.com", "Mithrandir", encoder.encode("password"), shire, lonelyMountainGolfClub);
         gandalf.setHandicap(Math.round(Math.random() * 30 * 10.0) / 10.0);
 
-        User aragorn = new User("aragorn@gondor.gov", "Aragorn Elessar", encoder.encode("password"), gondor, osgiliathGolfClub);
+        User aragorn = new User("aragorn@gondor.gov", "Aragorn_Elessar", encoder.encode("password"), gondor, osgiliathGolfClub);
         aragorn.setHandicap(Math.round(Math.random() * 30 * 10.0) / 10.0);
 
-        User legolas = new User("legolas@mirkwood.net", "Legolas Greenleaf", encoder.encode("password"), lothlorien, lindonGolfClub);
+        User legolas = new User("legolas@mirkwood.net", "Legolas_Greenleaf", encoder.encode("password"), lothlorien, lindonGolfClub);
         legolas.setHandicap(Math.round(Math.random() * 30 * 10.0) / 10.0);
 
         User gimli = new User("gimli@erebor.com", "Gimli son of Gloin", encoder.encode("password"), moria, khazadDumGolfClub);

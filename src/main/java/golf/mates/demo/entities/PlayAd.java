@@ -1,6 +1,7 @@
 package golf.mates.demo.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import golf.mates.demo.utils.PlayAdRequestStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -22,9 +23,21 @@ public class PlayAd {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "creator_id")
     private User creator;
+    @Column(name = "creator_id", insertable = false, updatable = false)
+    private Long creatorId;
+    @ManyToOne
+    @JoinColumn(name = "golfClub_id")
+    private GolfClub golfClub;
+    @Column(name = "golfClub_id", insertable = false, updatable = false)
+    private Long golfClubId;
+    @ManyToOne
+    @JoinColumn(name = "location_id")
+    private Location location;
+    @Column(name = "location_id", insertable = false, updatable = false)
+    private Long locationId;
 
     @OneToMany(mappedBy = "playAd", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PlayAdRequest> requests = new ArrayList<>();
@@ -44,6 +57,7 @@ public class PlayAd {
         for (int i = 0; i < 3; i++) {
             this.slots.add(new PlayAdSlot(this, i + 1));
         }
+        setCreatedTimeForAd();
     }
 
     public void setCreatedTimeForAd() {
@@ -58,18 +72,22 @@ public class PlayAd {
         return creator;
     }
 
+    @JsonIgnore
     public List<PlayAdRequest> getRequests() {
         return requests;
     }
 
+    @JsonIgnore
     public List<PlayAdSlot> getSlots() {
         return slots;
     }
 
+
+    // kan använda denna för clean up ibland, men tror inte det behövs, utan kan söka specifikt på PENDING requests bara.
+
     public void checkAndCleanupRequests() {
         boolean allFilledAndApproved = slots.stream()
                 .noneMatch(PlayAdSlot::isEmpty);
-
         if (allFilledAndApproved) {
             requests.removeIf(request -> request.getStatus() != PlayAdRequestStatus.APPROVED);
         }
@@ -84,9 +102,9 @@ public class PlayAd {
         }
     }
 
-    public void removePlayer(User player) {
+    public void removePlayer(String username) {
         for (PlayAdSlot slot : slots) {
-            if (slot.hasPlayer(player)) {
+            if (slot.hasPlayer(username)) {
                 slot.removePlayer();
                 break;
             }

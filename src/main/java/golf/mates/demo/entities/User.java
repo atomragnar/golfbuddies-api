@@ -75,9 +75,9 @@ public class User {
 
     public User(UserRegistrationDto userRegistrationDto) {
         this.username = userRegistrationDto.getUsername();
+        this.email = userRegistrationDto.getEmail();
         this.password = userRegistrationDto.getPassword();
-        this.locationId = userRegistrationDto.getLocationId();
-        this.handicap = userRegistrationDto.getHandicap();
+        this.handicap = 36.0;
     }
 
     public User(String email, String username, String password, Location location, GolfClub golfClub) {
@@ -87,6 +87,12 @@ public class User {
         this.location = location;
         setGolfClub(golfClub);
         this.role = "ROLE_USER";
+    }
+
+    public User(String email, String username, String password) {
+        this.email = email;
+        this.username = username;
+        this.password = password;
     }
 
 

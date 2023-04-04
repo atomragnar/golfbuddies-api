@@ -26,7 +26,7 @@ public class UserController {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
-    @PostMapping("register")
+    @PostMapping("signup")
     public ResponseEntity<HttpStatus> addNewUser(@Valid @RequestBody UserRegistrationDto userRegistrationDto) {
         userService.registerNewUser(userRegistrationDto);
         return new ResponseEntity<>(HttpStatus.OK);

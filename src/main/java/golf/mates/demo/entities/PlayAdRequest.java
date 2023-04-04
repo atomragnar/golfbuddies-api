@@ -17,10 +17,12 @@ public class PlayAdRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn
     private User requester;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn
     private PlayAd playAd;
 
     private int slotIndex;
@@ -30,15 +32,25 @@ public class PlayAdRequest {
 
     LocalDateTime createdAt;
 
-    public PlayAdRequest(User requester, PlayAd playAd, int slotIndex) {
+    public PlayAdRequest(User requester, PlayAd playAd) {
         this.requester = requester;
-        this.playAd = playAd;
-        this.slotIndex = slotIndex;
+        setPlayAd(playAd);
         this.status = PlayAdRequestStatus.PENDING;
+    }
+
+    public void setPlayAd(PlayAd playAd) {
+        this.playAd = playAd;
+        playAd.getRequests().add(this);
+        this.slotIndex = playAd.getRequests().size() - 1;
     }
 
     public void setCreatedTimeForRequest() {
         this.setCreatedAt(LocalDateTime.now());
+    }
+
+    public void setPlayAdRequestApproved() {
+        this.status = PlayAdRequestStatus.APPROVED;
+        this.playAd.addPlayer(this.requester);
     }
 
 }

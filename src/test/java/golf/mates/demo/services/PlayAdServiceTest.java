@@ -1,4 +1,5 @@
-/*
+package golf.mates.demo.services;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -8,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import golf.mates.demo.repositories.UserRepository;
+import golf.mates.demo.services.PlayAdService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,10 +22,9 @@ import golf.mates.demo.entities.PlayAd;
 import golf.mates.demo.entities.PlayAdRequest;
 import golf.mates.demo.entities.PlayAdSlot;
 import golf.mates.demo.entities.User;
-import golf.mates.demo.exceptions.PlayAdNotFoundException;
-import golf.mates.demo.exceptions.PlayAdRequestNotFoundException;
 import golf.mates.demo.repositories.PlayAdRepository;
 import golf.mates.demo.repositories.PlayAdRequestRepository;
+import org.springframework.web.server.ResponseStatusException;
 
 @ExtendWith(MockitoExtension.class)
 public class PlayAdServiceTest {
@@ -36,6 +38,9 @@ public class PlayAdServiceTest {
     @InjectMocks
     private PlayAdService playAdService;
 
+    @Mock
+    private UserRepository userRepository;
+
     private User user1;
     private User user2;
     private User user3;
@@ -44,9 +49,9 @@ public class PlayAdServiceTest {
 
     @BeforeEach
     void setUp() {
-        user1 = new User("user1");
-        user2 = new User("user2");
-        user3 = new User("user3");
+        user1 = new User("testuser1", "password", "Test");
+        user2 = new User("testuser2", "password", "Test");
+        user3 = new User("testuser3", "password", "Test");
 
         playAd = new PlayAd(user1);
 
@@ -92,14 +97,15 @@ public class PlayAdServiceTest {
     }
 
     @Test
-    void testGetPlayAdByIdThrowsPlayAdNotFoundException() {
+    void testGetPlayAdByIdThrowsResponseStatusException() {
         when(playAdRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThrows(PlayAdNotFoundException.class, () -> {
+        assertThrows(ResponseStatusException.class, () -> {
             playAdService.getPlayAdById(1L);
         });
     }
 
+/*
     @Test
     void testAddPlayerToPlayAd() {
         when(playAdRepository.findById(anyLong())).thenReturn(Optional.of(playAd));
@@ -109,11 +115,13 @@ public class PlayAdServiceTest {
 
         assertTrue(playAd.getSlots().get(0).getPlayer().equals(user2));
     }
+*/
 
     @Test
-    void testCreatePlayAd() {
-        User creator = new User("testuser", "password", "Test", "User");
+    void testCreatePlayAdSlots() {
+        User creator = new User("testuser", "password", "Test");
         PlayAd playAd = new PlayAd(creator);
+
         when(playAdRepository.save(any(PlayAd.class))).thenReturn(playAd);
 
         PlayAd createdPlayAd = playAdService.createPlayAd(creator);
@@ -129,32 +137,34 @@ public class PlayAdServiceTest {
         PlayAd playAd = new PlayAd();
         when(playAdRepository.findById(playAdId)).thenReturn(Optional.of(playAd));
 
-        PlayAd retrievedPlayAd = playAdService.getPlayAd(playAdId);
+        PlayAd retrievedPlayAd = playAdService.getPlayAdById(playAdId);
 
         assertEquals(playAd, retrievedPlayAd);
     }
 
     @Test
     void testAddPlayerToPlayAd() {
-        User creator = new User("testuser", "password", "Test", "User");
-        User player = new User("testuser2", "password", "Test", "User2");
+        User creator = new User("testuser", "password", "Test");
+        User player = new User("testuser2", "password", "Test");
         PlayAd playAd = new PlayAd(creator);
         playAd.addPlayer(creator);
         when(userRepository.findByUsernameIgnoreCase(player.getUsername())).thenReturn(Optional.of(player));
         when(playAdRepository.findById(playAd.getId())).thenReturn(Optional.of(playAd));
 
-        playAdService.addPlayerToPlayAd(playAd.getId(), player.getUsername());
+        playAdService.addPlayerToPlayAd(playAd.getId(), player.getId());
 
         assertEquals(player, playAd.getSlots().get(1).getPlayer());
     }
 
     @Test
     void testRemovePlayerFromPlayAd() {
-        User creator = new User("testuser", "password", "Test", "User");
-        User player = new User("testuser2", "password", "Test", "User2");
+        User creator = new User("testuser", "password", "Test");
+        User player = new User("testuser2", "password", "Test");
+
         PlayAd playAd = new PlayAd(creator);
         PlayAdSlot slot = playAd.getSlots().get(0);
         slot.setPlayer(player);
+
         when(userRepository.findByUsernameIgnoreCase(player.getUsername())).thenReturn(Optional.of(player));
         when(playAdRepository.findById(playAd.getId())).thenReturn(Optional.of(playAd));
 
@@ -162,11 +172,13 @@ public class PlayAdServiceTest {
 
         assertNull(slot.getPlayer());
     }
+}
 
+/*
     @Test
     void testRequestToJoinPlayAd() {
-        User requester = new User("testuser2", "password", "Test", "User2");
-        User creator = new User("testuser", "password", "Test", "User");
+        User requester = new User("testuser2", "password", "Test");
+        User creator = new User("testuser", "password", "Test");
         PlayAd playAd = new PlayAd(creator);
         when(userRepository.findByUsernameIgnoreCase(requester.getUsername())).thenReturn(Optional.of(requester));
         when(playAdRepository.findById(playAd.getId())).thenReturn(Optional.of(playAd));
@@ -180,5 +192,5 @@ public class PlayAdServiceTest {
         assertEquals(0, request.getSlotIndex());
         assertEquals(PlayAdRequestStatus.PENDING, request.getStatus());
     }
-
 */
+

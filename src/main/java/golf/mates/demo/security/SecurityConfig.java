@@ -63,10 +63,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/signup", "/login").permitAll()
                         .requestMatchers(PathRequest.toH2Console()).permitAll()
-                        /*.requestMatchers("/register", "/authenticate").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")*/
                         .anyRequest()
+                        //.authenticated()
                         .permitAll()
                 )
                 // TODO justera med endast origin för h2 senare.
