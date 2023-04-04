@@ -11,6 +11,8 @@ import golf.mates.demo.repositories.PlayAdRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PlayAdService {
@@ -24,6 +26,10 @@ public class PlayAdService {
         PlayAd playad = new PlayAd(playAdRegistrationDto);
         playad.setGolfClub(golfClubRepository.findById(playAdRegistrationDto.getGolfclub()).get());
         playAdRepository.save(playad);
+    }
+
+    public List<PlayAd> getAllAds() {
+        return playAdRepository.findAll();
     }
 }
 

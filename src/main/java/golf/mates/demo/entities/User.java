@@ -60,16 +60,18 @@ public class User {
     @JoinColumn(name = "golf_club_id")
     private GolfClub golfClub;
 
-    public User(String username, String password) {
+    public User(String username, String password, double handicap) {
         this.username = username;
         this.password = password;
+        this.handicap = handicap;
         this.role = "ROLE_USER";
     }
 
-    public User(String username, String password, Location location) {
+    public User(String username, String password, Location location, double handicap) {
         this.username = username;
         this.password = password;
         this.location = location;
+        this.handicap = handicap;
         this.role = "ROLE_USER";
     }
 
@@ -77,12 +79,14 @@ public class User {
     public User(UserRegistrationDto userRegistrationDto) {
         this.username = userRegistrationDto.getUsername();
         this.password = userRegistrationDto.getPassword();
+        this.handicap = userRegistrationDto.getHandicap();
     }
 
-    public User(String username, String password, Location location, GolfClub golfClub) {
+    public User(String username, String password, Location location, GolfClub golfClub, double handicap) {
         this.username = username;
         this.password = password;
         this.location = location;
+        this.handicap = handicap;
         setGolfClub(golfClub);
         this.role = "ROLE_USER";
     }

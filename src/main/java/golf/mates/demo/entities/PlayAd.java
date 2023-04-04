@@ -31,6 +31,8 @@ public class PlayAd {
     private boolean hasCar;
     private int amoutOfSlots;
     private int emptySlots;
+
+    private Double handicap;
     @ManyToOne
     @JoinColumn(name = "created_by_id")
     private User createdBy;
@@ -48,6 +50,7 @@ public class PlayAd {
         this.hasCar = playAdRegistrationDto.isHasCar();
         this.amoutOfSlots = 4;
         this.emptySlots = 3;
+        this.handicap = playAdRegistrationDto.getHandicap();
     }
 
     public boolean isNew() {
