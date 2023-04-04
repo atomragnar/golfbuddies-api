@@ -30,16 +30,13 @@ public class MessageService {
     }
 
     public Message createMessage(Long conversationId, Message message) {
-        // Find the conversation by ID
+
         Conversation conversation = conversationService.findConversationById(conversationId);
 
-        // Add the message to the conversation's messages collection
         conversation.getMessages().add(message);
 
-        // Set the conversation on the message
         message.setConversation(conversation);
 
-        // Save the message and return it
         return messageRepository.save(message);
     }
 
