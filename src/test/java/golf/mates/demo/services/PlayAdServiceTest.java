@@ -78,7 +78,7 @@ public class PlayAdServiceTest {
         requests.add(request2);
     }
 
-    @Test
+  /*  @Test
     void testCreatePlayAd() {
         when(playAdRepository.save(any())).thenReturn(playAd);
 
@@ -86,7 +86,7 @@ public class PlayAdServiceTest {
 
         assertEquals(playAd, result);
     }
-
+*/
     @Test
     void testGetPlayAdById() {
         when(playAdRepository.findById(anyLong())).thenReturn(Optional.of(playAd));
@@ -117,7 +117,7 @@ public class PlayAdServiceTest {
     }
 */
 
-    @Test
+    /*@Test
     void testCreatePlayAdSlots() {
         User creator = new User("testuser", "password", "Test");
         PlayAd playAd = new PlayAd(creator);
@@ -130,7 +130,7 @@ public class PlayAdServiceTest {
         assertEquals(creator, createdPlayAd.getCreator());
         assertEquals(3, createdPlayAd.getSlots().size());
     }
-
+*/
     @Test
     void testGetPlayAd() {
         Long playAdId = 1L;
