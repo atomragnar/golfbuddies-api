@@ -37,7 +37,7 @@ public class PlayAdRequestService {
        PlayAd playAd = playAdService.getPlayAdById(requestAdSlotDto.getPlayAdId());
        PlayAdRequest playAdRequest = new PlayAdRequest(user, playAd);
        playAdRequest.setCreatedTimeForRequest();
-       playAdRequestRepository.save(playAdRequest);
+       //playAdRequestRepository.save(playAdRequest);
    }
 
    public List<AdReqResponseDto> findAllRequestByAdCreator(Long userId) {

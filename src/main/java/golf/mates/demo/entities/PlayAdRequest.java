@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 
@@ -33,9 +35,14 @@ public class PlayAdRequest {
     LocalDateTime createdAt;
 
     public PlayAdRequest(User requester, PlayAd playAd) {
-        this.requester = requester;
-        setPlayAd(playAd);
-        this.status = PlayAdRequestStatus.PENDING;
+        if (!(requester.getUsername().equals(playAd.getCreator().getUsername()))) {
+            this.requester = requester;
+            setPlayAd(playAd);
+            this.status = PlayAdRequestStatus.PENDING;
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        setCreatedTimeForRequest();
     }
 
     public void setPlayAd(PlayAd playAd) {
