@@ -32,4 +32,9 @@ public class PlayAdController {
     public  ResponseEntity<List<PlayAd>> getAds(){
         return new ResponseEntity<>(playAdService.getAllAds(), HttpStatus.OK);
     }
+
+    @PutMapping("{id}/{username}")
+    public void updateAd(@PathVariable Long id, @PathVariable String username){
+        playAdService.updateAd(username,id);
+    }
 }

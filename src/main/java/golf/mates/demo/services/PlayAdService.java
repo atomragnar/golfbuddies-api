@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +31,18 @@ public class PlayAdService {
 
     public List<PlayAd> getAllAds() {
         return playAdRepository.findAll();
+    }
+
+    public Object updateAd(String username, Long id) {
+        PlayAd playad = playAdRepository.findById(id).get();
+        Set<String> players = playad.getPlayers();
+
+        if(players.size()<4) {
+            players.add(username);
+            playad.setEmptySlots(playad.getEmptySlots()-1);
+            playad.setPlayers(players);
+        }
+        return playAdRepository.save(playad);
     }
 }
 

@@ -7,11 +7,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.UUID;
 
 
 @Entity
@@ -31,6 +30,8 @@ public class PlayAd {
     private boolean hasCar;
     private int amoutOfSlots;
     private int emptySlots;
+
+    private Set<String> players = new HashSet<>(4);
 
     private Double handicap;
     @ManyToOne
