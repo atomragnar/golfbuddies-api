@@ -23,7 +23,6 @@ public class PlayAdController {
     private final PlayAdService playAdService;
     @PostMapping("register")
     public ResponseEntity<HttpStatus> addNewUser(@RequestBody PlayAdRegistrationDto playAdRegistrationDto) {
-        System.out.println(playAdRegistrationDto);
         playAdService.registerNewAd(playAdRegistrationDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }

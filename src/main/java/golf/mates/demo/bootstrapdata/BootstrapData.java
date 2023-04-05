@@ -102,15 +102,15 @@ public class BootstrapData implements CommandLineRunner {
         playAd1.setCreatedBy(userRepository.findById(1L).get());
 
 
-        playAd1.setPlayers(new HashSet<String>(Arrays.asList((userRepository.findById(1L).get().getUsername() + "\nHC: " +  userRepository.findById(1L).get().getHandicap()))));
+        playAd1.setPlayers(new HashSet<String>(Arrays.asList((userRepository.findById(1L).get().getUsername() + "\nHCP: " +  userRepository.findById(1L).get().getHandicap()))));
 
       playAd2.setGolfClub(golfClubRepository.findById(3L).get());
        playAd2.setCreatedBy(userRepository.findById(2L).get());
-        playAd2.setPlayers(new HashSet<String>(Arrays.asList((userRepository.findById(2L).get().getUsername() + "\nHC: " +  userRepository.findById(2L).get().getHandicap()))));
+        playAd2.setPlayers(new HashSet<String>(Arrays.asList((userRepository.findById(2L).get().getUsername() + "\nHCP: " +  userRepository.findById(2L).get().getHandicap()))));
 
         playAd3.setGolfClub(golfClubRepository.findById(4L).get());
         playAd3.setCreatedBy(userRepository.findById(3L).get());
-        playAd3.setPlayers(new HashSet<String>(Arrays.asList((userRepository.findById(3L).get().getUsername() + "\nHC:" + userRepository.findById(3L).get().getHandicap()))));
+        playAd3.setPlayers(new HashSet<String>(Arrays.asList((userRepository.findById(3L).get().getUsername() + "\nHCP:" + userRepository.findById(3L).get().getHandicap()))));
 
 
 
