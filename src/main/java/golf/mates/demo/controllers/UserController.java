@@ -37,6 +37,11 @@ public class UserController {
         return new ResponseEntity<>(userService.getUserInfo(username), HttpStatus.OK);
     }
 
+    @GetMapping("/info/id/{userId}")
+    public ResponseEntity<Object> getUserInfoByUserID(@PathVariable("userId") @NotBlank Long userId) {
+        return new ResponseEntity<>(userService.getUserInfoById(userId), HttpStatus.OK);
+    }
+
     @PutMapping("update/{username}/info")
     public ResponseEntity<Object> updateUserInfo(@RequestBody UserInfoDto userInfoDto, @PathVariable String username) {
         return null;

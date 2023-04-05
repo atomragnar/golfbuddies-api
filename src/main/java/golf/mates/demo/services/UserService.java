@@ -75,6 +75,10 @@ public class UserService {
     }
 
 
+    public UserInfoDto getUserInfoById(Long userId) {
+        return UserMapper.toInfoDto(findUserById(userId));
+
+    }
 }
 
 

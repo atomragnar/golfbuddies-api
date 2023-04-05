@@ -35,8 +35,10 @@ public class UserMapper {
                 user.getId(),
                 user.getEmail(),
                 user.getUsername(),
+                user.getGolfClub().getClub(),
                 user.getLocation().getDistrict(),
-                user.getHandicap()
+                user.getHandicap(),
+                user.getCreatedDate().toLocalDateTime()
         );
     }
 
