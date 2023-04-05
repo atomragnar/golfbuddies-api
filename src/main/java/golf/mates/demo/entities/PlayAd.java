@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,10 +42,10 @@ public class PlayAd {
     private Location location;
     @Column(name = "location_id", insertable = false, updatable = false)
     private Long locationId;
-    @OneToMany(mappedBy = "playAd", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "playAd", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PlayAdRequest> requests = new ArrayList<>();
 
-    @OneToMany(mappedBy = "playAd", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "playAd", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PlayAdSlot> slots = new ArrayList<>(4);
 
     LocalDateTime createdAt;

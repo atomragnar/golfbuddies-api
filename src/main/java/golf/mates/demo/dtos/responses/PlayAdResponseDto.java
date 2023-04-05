@@ -18,5 +18,4 @@ public class PlayAdResponseDto {
     private String[] bookedPlayers;
 
 
-
 }

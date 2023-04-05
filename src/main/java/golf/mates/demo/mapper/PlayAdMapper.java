@@ -44,11 +44,14 @@ public class PlayAdMapper {
 
     private static String[] bookedPlayersArray(List<PlayAdSlot> playAdSlotsList) {
         int length = playAdSlotsList.size();
-        Optional<User> slot;
-        String[] bookedPlayers = new String[length - 1];
+        String[] bookedPlayers = new String[length];
         for (int i = 0; i < length; i++) {
-            slot = Optional.of(playAdSlotsList.get(i).getPlayer());
-            bookedPlayers[i] = slot.map(User::getUsername).orElse("empty");
+            User player = playAdSlotsList.get(i).getPlayer();
+            if (player != null) {
+                bookedPlayers[i] = player.getUsername();
+            } else {
+                bookedPlayers[i] = "empty";
+            }
         }
         return bookedPlayers;
     }

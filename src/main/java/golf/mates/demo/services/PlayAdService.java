@@ -116,4 +116,8 @@ public class PlayAdService {
         List<PlayAd> playAdList = playAdRepository.findByCreator_Id(userId);
         return PlayAdMapper.toResponseDtoList(playAdList);
     }
+
+    public void deletePlayAd(Long playAdId) {
+        playAdRepository.deleteById(playAdId);
+    }
 }
