@@ -1,6 +1,5 @@
 package golf.mates.demo.controllers;
 
-
 import golf.mates.demo.entities.Location;
 import golf.mates.demo.services.LocationService;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +18,9 @@ public class LocationController {
 
     private final LocationService locationService;
 
-
     @GetMapping("all")
     public ResponseEntity<List<Location>> getAllLocations() {
         return new ResponseEntity<>(locationService.getAllLocations(), HttpStatus.OK);
     }
-
 
 }

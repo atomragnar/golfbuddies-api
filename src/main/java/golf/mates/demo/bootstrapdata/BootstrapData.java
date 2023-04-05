@@ -35,7 +35,7 @@ public class BootstrapData implements CommandLineRunner {
     }
 
     private void loadData() throws IOException {
-        File file = ResourceUtils.getFile("classpath:csvdata/golfklubbar_lista.csv");
+        File file = ResourceUtils.getFile("classpath:csvdata/golfklubbar.csv");
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
 
