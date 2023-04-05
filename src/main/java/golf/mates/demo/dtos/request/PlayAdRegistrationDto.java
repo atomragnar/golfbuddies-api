@@ -20,4 +20,6 @@ public class PlayAdRegistrationDto {
     private double handicap;
     private Long locationId;
 
+    private String username;
+
 }

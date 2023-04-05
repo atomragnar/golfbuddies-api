@@ -8,7 +8,9 @@ import golf.mates.demo.entities.User;
 import golf.mates.demo.repositories.GolfClubRepository;
 import golf.mates.demo.repositories.GolfCourseRepository;
 import golf.mates.demo.repositories.PlayAdRepository;
+import golf.mates.demo.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +20,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class PlayAdService {
 
+    private final UserRepository userRepository;
 
     private final PlayAdRepository playAdRepository;
     private final GolfClubRepository golfClubRepository;
@@ -26,6 +29,11 @@ public class PlayAdService {
     public void registerNewAd(PlayAdRegistrationDto playAdRegistrationDto) {
         PlayAd playad = new PlayAd(playAdRegistrationDto);
         playad.setGolfClub(golfClubRepository.findById(playAdRegistrationDto.getGolfclub()).get());
+        playad.setCreatedBy((User) userRepository.findByUsernameIgnoreCase(playAdRegistrationDto.getUsername()).get());
+        System.out.println(userRepository.findByUsernameIgnoreCase(playAdRegistrationDto.getUsername()).get());
+        Set<String> players = playad.getPlayers();
+        players.add( playAdRegistrationDto.getUsername());
+        playad.setPlayers(players);
         playAdRepository.save(playad);
     }
 

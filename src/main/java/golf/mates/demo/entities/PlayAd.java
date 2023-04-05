@@ -1,5 +1,6 @@
 package golf.mates.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import golf.mates.demo.dtos.request.PlayAdRegistrationDto;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -34,6 +35,7 @@ public class PlayAd {
     private Set<String> players = new HashSet<>(4);
 
     private Double handicap;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "created_by_id")
     private User createdBy;

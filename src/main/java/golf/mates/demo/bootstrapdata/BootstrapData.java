@@ -85,9 +85,9 @@ public class BootstrapData implements CommandLineRunner {
         GolfClub golfClub2 = golfClubRepository.findById(250L).get();
         GolfClub golfClub3 = golfClubRepository.findById(100L).get();
 
-        User user1 = new User("user1", encoder.encode("password"), location1, golfClub1, 12);
-        User user2 = new User("user2", encoder.encode("password"), location2, golfClub2, 3);
-        User user3 = new User("user3", encoder.encode("password"), location3, golfClub3,4);
+        User user1 = new User("RobinGolf", encoder.encode("password"), location1, golfClub1, 12);
+        User user2 = new User("FredrikB", encoder.encode("password"), location2, golfClub2, 3);
+        User user3 = new User("JockeKrus", encoder.encode("password"), location3, golfClub3,4);
 
         userRepository.save(user1);
         userRepository.save(user2);
@@ -99,16 +99,18 @@ public class BootstrapData implements CommandLineRunner {
         PlayAd playAd3 = new PlayAd(new PlayAdRegistrationDto());
 
         playAd1.setGolfClub(golfClubRepository.findById(1L).get());
-//        playAd1.setCreatedBy(userRepository.findById(1L).get());
-//        playAd1.setPlayers(new HashSet<String>(Arrays.asList(userRepository.findById(1L).get().getUsername())));
-//
-        playAd2.setGolfClub(golfClubRepository.findById(3L).get());
-//        playAd2.setCreatedBy(userRepository.findById(2L).get());
-//        playAd2.setPlayers(new HashSet<String>(Arrays.asList(userRepository.findById(2L).get().getUsername())));
-//
+        playAd1.setCreatedBy(userRepository.findById(1L).get());
+
+
+        playAd1.setPlayers(new HashSet<String>(Arrays.asList((userRepository.findById(1L).get().getUsername() + "\nHC: " +  userRepository.findById(1L).get().getHandicap()))));
+
+      playAd2.setGolfClub(golfClubRepository.findById(3L).get());
+       playAd2.setCreatedBy(userRepository.findById(2L).get());
+        playAd2.setPlayers(new HashSet<String>(Arrays.asList((userRepository.findById(2L).get().getUsername() + "\nHC: " +  userRepository.findById(2L).get().getHandicap()))));
+
         playAd3.setGolfClub(golfClubRepository.findById(4L).get());
-//        playAd3.setCreatedBy(userRepository.findById(3L).get());
-//        playAd3.setPlayers(new HashSet<String>(Arrays.asList(userRepository.findById(3L).get().getUsername())));
+        playAd3.setCreatedBy(userRepository.findById(3L).get());
+        playAd3.setPlayers(new HashSet<String>(Arrays.asList((userRepository.findById(3L).get().getUsername() + "\nHC:" + userRepository.findById(3L).get().getHandicap()))));
 
 
 
