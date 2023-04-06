@@ -22,6 +22,7 @@ public class PlayAdService {
 
 
     public void registerNewAd(PlayAdRegistrationDto playAdRegistrationDto) {
+
         playAdRepository.save(createPlayAd(playAdRegistrationDto));
     }
 
@@ -31,14 +32,16 @@ public class PlayAdService {
 
 
     public void bookPlayer(String username, Long id) {
-        PlayAd playad = playAdRepository.findById(id).get();
-        updatePlayers(playad, username);
+        PlayAd playAd = playAdRepository.findById(id).get();
+        updatePlayers(playAd, username);
     }
 
     public PlayAd createPlayAd(PlayAdRegistrationDto playAdRegistrationDto) {
-        PlayAd playad = new PlayAd(playAdRegistrationDto);
-        updatePlayers(playad,playAdRegistrationDto.getUsername());
-        return playad;
+        PlayAd playAd = new PlayAd(playAdRegistrationDto);
+        playAd.setGolfClub(golfClubRepository.findById(playAdRegistrationDto.getGolfclub()).get());
+        playAd.setCreatedBy(userRepository.findByUsernameIgnoreCase(playAdRegistrationDto.getUsername()).get());
+        updatePlayers(playAd,playAdRegistrationDto.getUsername());
+        return playAd;
     }
 
     public void updatePlayers(PlayAd playad, String username) {
