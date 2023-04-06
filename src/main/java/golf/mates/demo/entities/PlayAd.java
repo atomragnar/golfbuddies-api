@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,22 +30,24 @@ public class PlayAd {
     @ManyToOne
     @JoinColumn(name = "golfClub_id")
     private GolfClub golfClub;
-    @Column(name = "golfClub_id", insertable = false, updatable = false)
-    private Long golfClubId;
+
+/*    @Column(name = "golfClub_id", insertable = false, updatable = false)
+    private Long golfClubId;*/
+
     @ManyToOne
     @JoinColumn(name = "course_id")
     private GolfCourse course;
-    @Column(name = "course_id", insertable = false, updatable = false)
-    private Long courseId;
+  /*  @Column(name = "course_id", insertable = false, updatable = false)
+    private Long courseId;*/
     @ManyToOne
     @JoinColumn(name = "location_id")
     private Location location;
-    @Column(name = "location_id", insertable = false, updatable = false)
-    private Long locationId;
-    @OneToMany(mappedBy = "playAd", cascade = CascadeType.ALL, orphanRemoval = true)
+    /*@Column(name = "location_id", insertable = false, updatable = false)
+    private Long locationId;*/
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "playAd", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PlayAdRequest> requests = new ArrayList<>();
 
-    @OneToMany(mappedBy = "playAd", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "playAd", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PlayAdSlot> slots = new ArrayList<>(4);
 
     LocalDateTime createdAt;

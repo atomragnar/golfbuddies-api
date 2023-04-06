@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Component
 public class UserMapper {
 
-    private final PasswordEncoder passwordEncoder;
+    private static PasswordEncoder passwordEncoder;
 
     public UserMapper(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
@@ -21,7 +21,9 @@ public class UserMapper {
 
 
     public static User toEntity(UserRegistrationDto dto) {
-        return new User(dto);
+        User user = new User(dto);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return user;
     }
 
     public static List<User> toEntityList(List<UserRegistrationDto> registrationDtos) {
@@ -31,12 +33,20 @@ public class UserMapper {
     }
 
     public static UserInfoDto toInfoDto(User user) {
+
+
+
+
         return new UserInfoDto(
                 user.getId(),
                 user.getEmail(),
                 user.getUsername(),
-                user.getLocation().getDistrict(),
-                user.getHandicap()
+                user.getGolfClub() == null ? "Ej registrerat"
+                : user.getGolfClub().getClub(),
+                user.getLocation() == null ? "Ej registrerat"
+                : user.getLocation().getDistrict(),
+                user.getHandicap(),
+                user.getCreatedDate().toString().substring(0, 10)
         );
     }
 

@@ -4,6 +4,7 @@ package golf.mates.demo.services;
 import golf.mates.demo.dtos.request.UserRegistrationDto;
 import golf.mates.demo.dtos.responses.UserInfoDto;
 
+import golf.mates.demo.entities.GenderEnum;
 import golf.mates.demo.entities.User;
 import golf.mates.demo.mapper.UserMapper;
 import golf.mates.demo.repositories.LocationRepository;
@@ -57,6 +58,11 @@ public class UserService {
         }
     }
 
+    public void setUserGender(Long userId, GenderEnum gender) {
+        User user = findUserById(userId);
+        user.setGender(gender);
+    }
+
 
     public List<UserInfoDto> findUserByLocationId(Long locationId) {
         List<User> users = userRepository.findByLocation_IdOrderByUsernameAsc(locationId);
@@ -75,6 +81,10 @@ public class UserService {
     }
 
 
+    public UserInfoDto getUserInfoById(Long userId) {
+        return UserMapper.toInfoDto(findUserById(userId));
+
+    }
 }
 
 

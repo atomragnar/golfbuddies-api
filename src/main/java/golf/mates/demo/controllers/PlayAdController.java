@@ -36,15 +36,22 @@ public class PlayAdController {
         return new ResponseEntity<>(playAdService.getPlayAdResponseDtoById(playAdId), HttpStatus.OK);
     }
 
+
+    @DeleteMapping("/{playAdId}")
+    public ResponseEntity<HttpStatus> deletePlayAd(@PathVariable Long playAdId) {
+        playAdService.deletePlayAd(playAdId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @GetMapping("/all")
     public ResponseEntity<List<PlayAdResponseDto>> getAllPlayAds() {
-        return null;
+        return new ResponseEntity<>(playAdService.getAllPlayAds(), HttpStatus.OK);
     }
 
 
     @GetMapping("/list/{userId}")
     public ResponseEntity<List<PlayAdResponseDto>> getAllPlayAdsByUser(@PathVariable("userId") Long userId) {
-        return null;
+        return new ResponseEntity<>(playAdService.getAllPlayAdsByUserId(userId), HttpStatus.OK);
     }
 
     @GetMapping("/course/{courseId}")

@@ -3,6 +3,7 @@ package golf.mates.demo.mapper;
 
 import golf.mates.demo.dtos.request.PlayAdRequestDto;
 import golf.mates.demo.dtos.responses.AdReqResponseDto;
+import golf.mates.demo.dtos.responses.BookedPlayersDto;
 import golf.mates.demo.dtos.responses.PlayAdResponseDto;
 import golf.mates.demo.entities.PlayAd;
 import golf.mates.demo.entities.PlayAdRequest;
@@ -24,13 +25,14 @@ public class PlayAdMapper {
         PlayAdResponseDto responseDto = new PlayAdResponseDto();
         responseDto.setPlayAdId(playAd.getId());
         responseDto.setCreatorId(playAd.getCreator().getId());
-        responseDto.setCourseId(playAd.getCourseId());
-        responseDto.setGolfClubId(playAd.getGolfClubId());
-        responseDto.setLocationId(playAd.getLocationId());
+        responseDto.setCourseId(playAd.getCourse().getId());
+        responseDto.setGolfClubId(playAd.getGolfClub().getId());
+        responseDto.setLocationId(playAd.getLocation().getId());
         responseDto.setCreatorUsername(playAd.getCreator().getUsername());
         responseDto.setCourse(playAd.getCourse().getCourse());
         responseDto.setGolfClub(playAd.getGolfClub().getClub());
         responseDto.setLocation(playAd.getLocation().getDistrict());
+        responseDto.setTime(playAd.getCreatedAt().toString().substring(0, 10));
         responseDto.setBookedPlayers(
                 bookedPlayersArray(playAd.getSlots())
         );
@@ -42,26 +44,37 @@ public class PlayAdMapper {
     }
 
 
-    private static String[] bookedPlayersArray(List<PlayAdSlot> playAdSlotsList) {
+    private static BookedPlayersDto[] bookedPlayersArray(List<PlayAdSlot> playAdSlotsList) {
         int length = playAdSlotsList.size();
-        Optional<User> slot;
-        String[] bookedPlayers = new String[length - 1];
+        BookedPlayersDto[] bookedPlayers = new BookedPlayersDto[length];
         for (int i = 0; i < length; i++) {
-            slot = Optional.of(playAdSlotsList.get(i).getPlayer());
-            bookedPlayers[i] = slot.map(User::getUsername).orElse("empty");
+            User player = playAdSlotsList.get(i).getPlayer();
+            if (player != null) {
+                BookedPlayersDto bookedPlayersDto = new BookedPlayersDto();
+                bookedPlayersDto.setUsername(player.getUsername());
+                bookedPlayersDto.setUserId(player.getId());
+                bookedPlayersDto.setId(i);
+                bookedPlayers[i] = bookedPlayersDto;
+            } else {
+                BookedPlayersDto bookedPlayersDto = new BookedPlayersDto();
+                bookedPlayersDto.setUsername("empty");
+                bookedPlayersDto.setUserId(0);
+                bookedPlayersDto.setId(i);
+                bookedPlayers[i] = bookedPlayersDto;
+            }
         }
         return bookedPlayers;
     }
 
 
-    public static PlayAd requestToEntity(PlayAdRequestDto requestDto, User user) {
+    /*public static PlayAd requestToEntity(PlayAdRequestDto requestDto, User user) {
         PlayAd playAd = new PlayAd(user);
         playAd.setCourseId(requestDto.getCourseId());
         playAd.setGolfClubId(requestDto.getGolfClubId());
         playAd.setLocationId(requestDto.getLocationId());
         return playAd;
     }
-
+*/
 
     public static AdReqResponseDto playAdRequestToRequestResponseDto(PlayAdRequest playAdRequest) {
         AdReqResponseDto adReqResponseDto = new AdReqResponseDto();
@@ -70,7 +83,8 @@ public class PlayAdMapper {
         adReqResponseDto.setRequesterId(playAdRequest.getRequester().getId());
         adReqResponseDto.setRequester(playAdRequest.getRequester().getUsername());
         adReqResponseDto.setRequesterHandicap(playAdRequest.getRequester().getHandicap());
-        adReqResponseDto.setRequestCreatedTime(playAdRequest.getCreatedAt());
+        adReqResponseDto.setRequestCreatedTime(playAdRequest.getCreatedAt().toString().substring(0, 10));
+        adReqResponseDto.setStatus(playAdRequest.getStatus().toString());
         return adReqResponseDto;
     }
 

@@ -2,8 +2,7 @@ package golf.mates.demo.services;
 
 import golf.mates.demo.dtos.request.PlayAdRequestDto;
 import golf.mates.demo.dtos.responses.PlayAdResponseDto;
-import golf.mates.demo.entities.PlayAd;
-import golf.mates.demo.entities.User;
+import golf.mates.demo.entities.*;
 import golf.mates.demo.mapper.PlayAdMapper;
 import golf.mates.demo.repositories.PlayAdRepository;
 import golf.mates.demo.repositories.PlayAdSlotRepository;
@@ -20,10 +19,19 @@ public class PlayAdService {
     private final PlayAdSlotRepository playAdSlotRepository;
     private final UserService userService;
 
-    public PlayAdService(PlayAdRepository playAdRepository, PlayAdSlotRepository playAdSlotRepository, UserService userService) {
+    private final LocationService locationService;
+
+    private final GolfClubService golfClubService;
+
+    private final GolfCourseService golfCourseService;
+
+    public PlayAdService(PlayAdRepository playAdRepository, PlayAdSlotRepository playAdSlotRepository, UserService userService, LocationService locationService, GolfClubService golfClubService, GolfCourseService golfCourseService) {
         this.playAdRepository = playAdRepository;
         this.playAdSlotRepository = playAdSlotRepository;
         this.userService = userService;
+        this.locationService = locationService;
+        this.golfClubService = golfClubService;
+        this.golfCourseService = golfCourseService;
     }
 
     public PlayAdResponseDto getPlayAdResponseDtoById(Long id) {
@@ -77,7 +85,15 @@ public class PlayAdService {
 
     public void createNewPlayAd(PlayAdRequestDto playAdRequestDto) {
         User user = userService.findUserById(playAdRequestDto.getUserId());
-        PlayAd playAd = PlayAdMapper.requestToEntity(playAdRequestDto, user);
+        Location location = locationService.findById(playAdRequestDto.getLocationId());
+        GolfClub golfClub = golfClubService.findById(playAdRequestDto.getGolfClubId());
+        GolfCourse golfCourse = golfCourseService.findById(playAdRequestDto.getCourseId());
+
+        PlayAd playAd = new PlayAd(user);
+        playAd.setLocation(location);
+        playAd.setGolfClub(golfClub);
+        playAd.setCourse(golfCourse);
+
         playAdRepository.save(playAd);
 
     }
@@ -115,5 +131,9 @@ public class PlayAdService {
     public List<PlayAdResponseDto> getCreatedPlayAdsByUser(Long userId) {
         List<PlayAd> playAdList = playAdRepository.findByCreator_Id(userId);
         return PlayAdMapper.toResponseDtoList(playAdList);
+    }
+
+    public void deletePlayAd(Long playAdId) {
+        playAdRepository.deleteById(playAdId);
     }
 }

@@ -1,5 +1,6 @@
 package golf.mates.demo.controllers;
 
+import golf.mates.demo.dtos.responses.GolfClubResponseDto;
 import golf.mates.demo.entities.GolfClub;
 import golf.mates.demo.services.GolfClubService;
 import jakarta.validation.constraints.Positive;
@@ -30,6 +31,12 @@ public class GolfClubController {
     public ResponseEntity<List<GolfClub>> getGolfClubByLocationId(@PathVariable("locationId") @Positive Long locationId) {
         return new ResponseEntity<>(golfClubService.findGolClubByLocationId(locationId), HttpStatus.OK);
     }
+
+
+        @GetMapping("/select/list")
+        public ResponseEntity<List<GolfClubResponseDto>> getAllGolfClubsAsDto() {
+            return new ResponseEntity<>(golfClubService.getAllClubsAsDto(), HttpStatus.OK);
+        }
 
 
 

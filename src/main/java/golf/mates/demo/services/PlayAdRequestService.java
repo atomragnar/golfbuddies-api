@@ -45,6 +45,12 @@ public class PlayAdRequestService {
        return checkIfListIsEmpty(playAdRequestList);
    }
 
+    public List<AdReqResponseDto> findAllRequestByAdCreatorStatusPending(Long userId) {
+        List<PlayAdRequest> playAdRequestList = playAdRequestRepository.findByPlayAd_Creator_IdAndStatusOrderByCreatedAtDesc(userId, PlayAdRequestStatus.PENDING);
+        return checkIfListIsEmpty(playAdRequestList);
+    }
+
+
    private List<AdReqResponseDto> checkIfListIsEmpty(List<PlayAdRequest> playAdRequestList) {
        if (!playAdRequestList.isEmpty()) {
            return PlayAdMapper.playAdRequestToRequestResponseDtoList(playAdRequestList);
