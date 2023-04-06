@@ -59,6 +59,7 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "golf_club_id")
     private GolfClub golfClub;
+    private String sex="Man";
 
     public User(String username, String password, double handicap) {
         this.username = username;
@@ -73,6 +74,7 @@ public class User {
         this.location = location;
         this.handicap = handicap;
         this.role = "ROLE_USER";
+
     }
 
 
@@ -80,15 +82,17 @@ public class User {
         this.username = userRegistrationDto.getUsername();
         this.password = userRegistrationDto.getPassword();
         this.handicap = userRegistrationDto.getHandicap();
+        this.sex = userRegistrationDto.getSex();
     }
 
-    public User(String username, String password, Location location, GolfClub golfClub, double handicap) {
+    public User(String username, String password, Location location, GolfClub golfClub, double handicap,String sex) {
         this.username = username;
         this.password = password;
         this.location = location;
         this.handicap = handicap;
         setGolfClub(golfClub);
         this.role = "ROLE_USER";
+        this.sex = sex;
     }
 
     public void setGolfClub(GolfClub golfClub) {

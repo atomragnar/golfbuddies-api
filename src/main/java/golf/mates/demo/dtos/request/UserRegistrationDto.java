@@ -14,6 +14,7 @@ public class UserRegistrationDto {
     private String password;
     private double handicap;
     private Long locationId;
+    private String sex;
 
 
 

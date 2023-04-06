@@ -34,6 +34,6 @@ public class PlayAdController {
 
     @PutMapping("{id}/{username}")
     public void updateAd(@PathVariable Long id, @PathVariable String username){
-        playAdService.updateAd(username,id);
+        playAdService.bookPlayer(username,id);
     }
 }

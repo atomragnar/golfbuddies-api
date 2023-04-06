@@ -86,9 +86,9 @@ public class BootstrapData implements CommandLineRunner {
         GolfClub golfClub2 = golfClubRepository.findById(250L).get();
         GolfClub golfClub3 = golfClubRepository.findById(100L).get();
 
-        User user1 = new User("RobinGolf", encoder.encode("password"), location1, golfClub1, 12);
-        User user2 = new User("FredrikB", encoder.encode("password"), location2, golfClub2, 3);
-        User user3 = new User("JockeKrus", encoder.encode("password"), location3, golfClub3,4);
+        User user1 = new User("RobinGolf", encoder.encode("password"), location1, golfClub1, 12,"Man");
+        User user2 = new User("FredrikB", encoder.encode("password"), location2, golfClub2, 3, "Man");
+        User user3 = new User("JockeKrus", encoder.encode("password"), location3, golfClub3,4,"Man");
 
         userRepository.save(user1);
         userRepository.save(user2);
@@ -105,18 +105,17 @@ public class BootstrapData implements CommandLineRunner {
         playAd1.setPlayTime(Timestamp.valueOf("2023-04-15 12:00:00"));
 
 
-        playAd1.setPlayers(new HashSet<String>(Arrays.asList((userRepository.findById(1L).get().getUsername() + " HCP: " +  userRepository.findById(1L).get().getHandicap()))));
+        playAd1.setPlayers(new HashSet<String>(Arrays.asList((userRepository.findById(1L).get().getUsername() + " (Kön: " + userRepository.findById(1L).get().getSex() + " HCP: " +  userRepository.findById(1L).get().getHandicap()+")"))));
 
-      playAd2.setGolfClub(golfClubRepository.findById(3L).get());
-       playAd2.setCreatedBy(userRepository.findById(2L).get());
-        playAd2.setPlayers(new HashSet<String>(Arrays.asList((userRepository.findById(2L).get().getUsername() + " HCP: " +  userRepository.findById(2L).get().getHandicap()))));
+        playAd2.setGolfClub(golfClubRepository.findById(3L).get());
+        playAd2.setCreatedBy(userRepository.findById(2L).get());
+        playAd2.setPlayers(new HashSet<String>(Arrays.asList((userRepository.findById(2L).get().getUsername() + " (Kön: " + userRepository.findById(2L).get().getSex() + " HCP: " +  userRepository.findById(2L).get().getHandicap()+")"))));
+        playAd2.setPlayTime(Timestamp.valueOf("2023-04-18 13:00:00"));
 
         playAd3.setGolfClub(golfClubRepository.findById(4L).get());
         playAd3.setCreatedBy(userRepository.findById(3L).get());
-        playAd3.setPlayers(new HashSet<String>(Arrays.asList((userRepository.findById(3L).get().getUsername() + " HCP:" + userRepository.findById(3L).get().getHandicap()))));
-
-
-
+        playAd3.setPlayers(new HashSet<String>(Arrays.asList((userRepository.findById(3L).get().getUsername() + " (Kön: " + userRepository.findById(3L).get().getSex() + " HCP: " +  userRepository.findById(3L).get().getHandicap()+")"))));
+        playAd3.setPlayTime(Timestamp.valueOf("2023-04-17 11:30:00"));
 
         golfClubRepository.save(golfClub1);
         golfClubRepository.save(golfClub2);
