@@ -53,7 +53,6 @@ public class PlayAd {
         this.hasCar = playAdRegistrationDto.isHasCar();
         this.amoutOfSlots = 4;
         this.emptySlots = 3;
-        this.handicap = playAdRegistrationDto.getHandicap();
     }
 
     public boolean isNew() {

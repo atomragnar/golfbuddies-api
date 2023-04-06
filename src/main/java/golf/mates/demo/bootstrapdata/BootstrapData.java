@@ -76,8 +76,6 @@ public class BootstrapData implements CommandLineRunner {
     private void loadUserData() {
 
 
-
-
         Location location1 = locationRepository.findById(2L).get();
         Location location2 = locationRepository.findById(15L).get();
         Location location3 = locationRepository.findById(8L).get();

@@ -17,7 +17,6 @@ public class PlayAdRegistrationDto {
 
     private boolean hasCar;
 
-    private double handicap;
     private Long locationId;
 
     private String username;
