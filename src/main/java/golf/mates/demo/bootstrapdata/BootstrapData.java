@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
 import java.io.*;
+import java.sql.Timestamp;
 import java.util.*;
 
 
@@ -100,17 +101,19 @@ public class BootstrapData implements CommandLineRunner {
 
         playAd1.setGolfClub(golfClubRepository.findById(1L).get());
         playAd1.setCreatedBy(userRepository.findById(1L).get());
+        playAd1.setHasCar(true);
+        playAd1.setPlayTime(Timestamp.valueOf("2023-04-15 12:00:00"));
 
 
-        playAd1.setPlayers(new HashSet<String>(Arrays.asList((userRepository.findById(1L).get().getUsername() + "\nHCP: " +  userRepository.findById(1L).get().getHandicap()))));
+        playAd1.setPlayers(new HashSet<String>(Arrays.asList((userRepository.findById(1L).get().getUsername() + " HCP: " +  userRepository.findById(1L).get().getHandicap()))));
 
       playAd2.setGolfClub(golfClubRepository.findById(3L).get());
        playAd2.setCreatedBy(userRepository.findById(2L).get());
-        playAd2.setPlayers(new HashSet<String>(Arrays.asList((userRepository.findById(2L).get().getUsername() + "\nHCP: " +  userRepository.findById(2L).get().getHandicap()))));
+        playAd2.setPlayers(new HashSet<String>(Arrays.asList((userRepository.findById(2L).get().getUsername() + " HCP: " +  userRepository.findById(2L).get().getHandicap()))));
 
         playAd3.setGolfClub(golfClubRepository.findById(4L).get());
         playAd3.setCreatedBy(userRepository.findById(3L).get());
-        playAd3.setPlayers(new HashSet<String>(Arrays.asList((userRepository.findById(3L).get().getUsername() + "\nHCP:" + userRepository.findById(3L).get().getHandicap()))));
+        playAd3.setPlayers(new HashSet<String>(Arrays.asList((userRepository.findById(3L).get().getUsername() + " HCP:" + userRepository.findById(3L).get().getHandicap()))));
 
 
 
