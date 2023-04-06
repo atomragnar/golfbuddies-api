@@ -31,7 +31,7 @@ public class PlayAdService {
         playad.setGolfClub(golfClubRepository.findById(playAdRegistrationDto.getGolfclub()).get());
         playad.setCreatedBy((User) userRepository.findByUsernameIgnoreCase(playAdRegistrationDto.getUsername()).get());
         Set<String> players = playad.getPlayers();
-        players.add( playAdRegistrationDto.getUsername()+" HCP: " + userRepository.findByUsernameIgnoreCase(playAdRegistrationDto.getUsername()).get().getHandicap());
+        players.add( playAdRegistrationDto.getUsername()+" - HCP: " + userRepository.findByUsernameIgnoreCase(playAdRegistrationDto.getUsername()).get().getHandicap());
         playad.setPlayers(players);
         playAdRepository.save(playad);
     }
@@ -45,7 +45,7 @@ public class PlayAdService {
         Set<String> players = playad.getPlayers();
 
         if(players.size()<4) {
-            players.add(username + " HCP: " + userRepository.findByUsernameIgnoreCase(username).get().getHandicap());
+            players.add(username + " - HCP: " + userRepository.findByUsernameIgnoreCase(username).get().getHandicap());
             playad.setEmptySlots(playad.getEmptySlots()-1);
             playad.setPlayers(players);
         }
