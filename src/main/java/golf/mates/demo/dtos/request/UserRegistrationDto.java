@@ -16,4 +16,5 @@ public class UserRegistrationDto {
     @NotBlank
     private String password;
 
+
 }

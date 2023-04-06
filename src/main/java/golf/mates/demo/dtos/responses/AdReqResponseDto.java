@@ -13,7 +13,9 @@ public class AdReqResponseDto {
     private long requesterId;
     private String requester;
     private double requesterHandicap;
-    private LocalDateTime requestCreatedTime;
+
+    private String status;
+    private String requestCreatedTime;
 
 
 }

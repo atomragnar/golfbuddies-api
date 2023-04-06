@@ -32,6 +32,11 @@ public class PlayAdRequestController {
         return new ResponseEntity<>(playAdRequestService.findAllRequestByAdCreator(userId), HttpStatus.OK);
     }
 
+    @GetMapping("/pending/to/{userId}")
+    public ResponseEntity<List<AdReqResponseDto>> getAllPendingRequestsToUser(@PathVariable("userId") Long userId) {
+        return new ResponseEntity<>(playAdRequestService.findAllRequestByAdCreatorStatusPending(userId), HttpStatus.OK);
+    }
+
     @GetMapping("/by/{userId}")
     public ResponseEntity<List<AdReqResponseDto>> getAllRequestsByUser(@PathVariable("userId") Long userId) {
         return new ResponseEntity<>(playAdRequestService.findAllRequestByUser(userId), HttpStatus.OK);

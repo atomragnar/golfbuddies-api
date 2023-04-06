@@ -4,6 +4,7 @@ package golf.mates.demo.services;
 import golf.mates.demo.dtos.request.UserRegistrationDto;
 import golf.mates.demo.dtos.responses.UserInfoDto;
 
+import golf.mates.demo.entities.GenderEnum;
 import golf.mates.demo.entities.User;
 import golf.mates.demo.mapper.UserMapper;
 import golf.mates.demo.repositories.LocationRepository;
@@ -55,6 +56,11 @@ public class UserService {
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
+    }
+
+    public void setUserGender(Long userId, GenderEnum gender) {
+        User user = findUserById(userId);
+        user.setGender(gender);
     }
 
 

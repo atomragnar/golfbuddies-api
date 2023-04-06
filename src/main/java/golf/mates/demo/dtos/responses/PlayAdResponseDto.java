@@ -15,7 +15,8 @@ public class PlayAdResponseDto {
     private String golfClub;
     private String course;
     private String location;
-    private String[] bookedPlayers;
+    private String time;
+    private BookedPlayersDto[] bookedPlayers;
 
 
 }

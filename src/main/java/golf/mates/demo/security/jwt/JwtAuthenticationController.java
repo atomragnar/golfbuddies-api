@@ -1,15 +1,13 @@
 package golf.mates.demo.security.jwt;
 
-import golf.mates.demo.security.jwt.JwtTokenRequest;
-import golf.mates.demo.security.jwt.JwtTokenResponse;
-import golf.mates.demo.security.jwt.JwtTokenService;
+import golf.mates.demo.dtos.request.UserRegistrationDto;
+import golf.mates.demo.services.UserService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -17,12 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class JwtAuthenticationController {
 
     private final JwtTokenService tokenService;
+    private final UserService userService;
 
     private final AuthenticationManager authenticationManager;
 
     public JwtAuthenticationController(JwtTokenService tokenService,
-                                       AuthenticationManager authenticationManager) {
+                                       UserService userService, AuthenticationManager authenticationManager) {
         this.tokenService = tokenService;
+        this.userService = userService;
         this.authenticationManager = authenticationManager;
     }
 
@@ -42,4 +42,17 @@ public class JwtAuthenticationController {
 
         return ResponseEntity.ok(new JwtTokenResponse(token));
     }
+
+    @PostMapping("signup")
+    public ResponseEntity<HttpStatus> addNewUser(@Valid @RequestBody UserRegistrationDto userRegistrationDto) {
+        userService.registerNewUser(userRegistrationDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("checkToken")
+    public ResponseEntity<HttpStatus> checkIfValidToken() {
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
 }

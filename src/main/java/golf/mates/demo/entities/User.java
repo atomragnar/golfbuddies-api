@@ -26,9 +26,12 @@ public class User {
     private Long id;
     private String email;
     private String username;
+
+    @Enumerated(EnumType.STRING)
+    private GenderEnum gender = GenderEnum.OKÄNT;
     @JsonIgnore
     private String password;
-    private double handicap;
+    private double handicap = 36.0;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "location_id")
     private Location location;

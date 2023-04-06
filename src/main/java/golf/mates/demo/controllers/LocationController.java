@@ -1,6 +1,8 @@
 package golf.mates.demo.controllers;
 
 
+import golf.mates.demo.dtos.responses.GolfCourseDto;
+import golf.mates.demo.dtos.responses.LocationDto;
 import golf.mates.demo.entities.Location;
 import golf.mates.demo.services.LocationService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,12 @@ public class LocationController {
     public ResponseEntity<List<Location>> getAllLocations() {
         return new ResponseEntity<>(locationService.getAllLocations(), HttpStatus.OK);
     }
+
+    @GetMapping("/select/list")
+    public ResponseEntity<List<LocationDto>> getAllLocationsAsDto() {
+        return new ResponseEntity<>(locationService.getAllLocationsAsDto(), HttpStatus.OK);
+    }
+
 
 
 }
