@@ -50,8 +50,9 @@ public class PlayAd {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "playAd", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PlayAdSlot> slots = new ArrayList<>(4);
 
-    LocalDateTime createdAt;
-    LocalDateTime startDateTime;
+    private LocalDateTime createdAt;
+    private LocalDateTime teeTime;
+    private boolean hasCar;
 
 
     //Duration duration;  kan ha denna för ev. ha tid for 18 hål.
@@ -63,6 +64,9 @@ public class PlayAd {
             this.slots.add(new PlayAdSlot(this, i + 1));
         }
         setCreatedTimeForAd();
+        this.totalHandicap = creator.getHandicap();
+        this.currentlyFilledSlot = 1;
+        this.handicapAverage = getHandicapAverage();
     }
 
     public void setCreatedTimeForAd() {
@@ -87,6 +91,11 @@ public class PlayAd {
         return slots;
     }
 
+    private double currentlyFilledSlot;
+    private double totalHandicap;
+    private double handicapAverage;
+
+
 
     // kan använda denna för clean up ibland, men tror inte det behövs, utan kan söka specifikt på PENDING requests bara.
 
@@ -98,22 +107,40 @@ public class PlayAd {
         }
     }
 
-    public void addPlayer(User player) {
-        for (PlayAdSlot slot : slots) {
-            if (slot.isEmpty()) {
-                slot.setPlayer(player);
-                break;
-            }
-        }
+    public double getHandicapAverage() {
+        return this.totalHandicap / this.currentlyFilledSlot;
     }
 
-    public void removePlayer(String username) {
+    public void addPlayer(User player) {
         for (PlayAdSlot slot : slots) {
-            if (slot.hasPlayer(username)) {
-                slot.removePlayer();
+            if (!slot.isEmpty()) {
+                if (slot.hasPlayer(player.getId())) {
+                    break;
+                }
+            }
+            if (slot.isEmpty()) {
+                slot.setPlayer(player);
+                this.currentlyFilledSlot++;
+                this.totalHandicap += player.getHandicap();
                 break;
             }
         }
+        this.handicapAverage = getHandicapAverage();
+    }
+
+    public void removePlayer(Long userId) {
+        for (int i = 0; i < slots.size(); i++) {
+            PlayAdSlot slot = slots.get(i);
+            if (slot.hasPlayer(userId)) {
+                System.out.println("Found a match");
+                this.currentlyFilledSlot--;
+                this.totalHandicap -= slot.getPlayer().getHandicap();
+                slot.removePlayer();
+                System.out.println(slot.getPlayer());
+                break;
+            }
+        }
+        this.handicapAverage = getHandicapAverage();
     }
 
 }

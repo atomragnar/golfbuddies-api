@@ -1,10 +1,9 @@
 package golf.mates.demo.controllers;
 
-import golf.mates.demo.dtos.request.UserRegistrationDto;
+import golf.mates.demo.dtos.request.UserUpdateInfoDto;
 import golf.mates.demo.dtos.responses.UserInfoDto;
 import golf.mates.demo.entities.GenderEnum;
 import golf.mates.demo.services.UserService;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -37,9 +36,10 @@ public class UserController {
         return new ResponseEntity<>(userService.getUserInfoById(userId), HttpStatus.OK);
     }
 
-    @PutMapping("update/{username}/info")
-    public ResponseEntity<Object> updateUserInfo(@RequestBody UserInfoDto userInfoDto, @PathVariable String username) {
-        return null;
+
+    @PutMapping("update")
+    public ResponseEntity<UserInfoDto> updateUserInfo(@RequestBody UserUpdateInfoDto userUpdateInfoDto) {
+        return new ResponseEntity<>(userService.upDateUserHandicapLocationEtc(userUpdateInfoDto) ,HttpStatus.OK);
     }
 
     @PutMapping("gender/male/{userId}")

@@ -168,7 +168,7 @@ public class PlayAdServiceTest {
         when(userRepository.findByUsernameIgnoreCase(player.getUsername())).thenReturn(Optional.of(player));
         when(playAdRepository.findById(playAd.getId())).thenReturn(Optional.of(playAd));
 
-        playAdService.removePlayerFromPlayAd(playAd.getId(), player.getUsername());
+        playAdService.removePlayerFromPlayAd(playAd.getId(), player.getId());
 
         assertNull(slot.getPlayer());
     }

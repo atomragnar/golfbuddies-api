@@ -9,6 +9,6 @@ public class BookedPlayersDto {
     private long id;
     private long userId;
     private String username;
-
+    private double handicap;
 
 }

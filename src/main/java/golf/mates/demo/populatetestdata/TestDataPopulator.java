@@ -7,6 +7,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -216,6 +217,12 @@ public class TestDataPopulator {
                 playAd.setCourse(golfCourses.get(RandomIndexGenerator.getRandomIndex(golfCourses)));
                 playAd.setLocation(locationList.get(RandomIndexGenerator.getRandomIndex(locationList)));
                 playAd.setGolfClub(golfClubList.get(RandomIndexGenerator.getRandomIndex(golfClubList)));
+                if (i % 2 == 0) {
+                    playAd.setHasCar(true);
+                } else {
+                    playAd.setHasCar(false);
+                }
+                playAd.setTeeTime(LocalDateTime.now().plusHours(100 * i));
                 playAdList.add(playAd);
             }
         }

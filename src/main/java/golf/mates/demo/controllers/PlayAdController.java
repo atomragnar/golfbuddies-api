@@ -1,6 +1,7 @@
 package golf.mates.demo.controllers;
 
 import golf.mates.demo.dtos.request.PlayAdRequestDto;
+import golf.mates.demo.dtos.request.PlayAdUserRequestDto;
 import golf.mates.demo.dtos.responses.PlayAdResponseDto;
 import golf.mates.demo.entities.PlayAd;
 import golf.mates.demo.services.PlayAdService;
@@ -25,7 +26,7 @@ public class PlayAdController {
 
     private final PlayAdService playAdService;
 
-    @PostMapping("/new")
+    @PostMapping("/")
     public ResponseEntity<HttpStatus> createNewPlayAd(@RequestBody PlayAdRequestDto playAdRequestDto) {
         playAdService.createNewPlayAd(playAdRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -34,6 +35,12 @@ public class PlayAdController {
     @GetMapping("/{playAdId}")
     public ResponseEntity<PlayAdResponseDto> getPlayAdById(@PathVariable Long playAdId) {
         return new ResponseEntity<>(playAdService.getPlayAdResponseDtoById(playAdId), HttpStatus.OK);
+    }
+
+
+    @PutMapping("/{playAdId}")
+    public ResponseEntity<PlayAdResponseDto> updatePlayAdById(@PathVariable Long playAdId) {
+        return null;
     }
 
 
@@ -89,6 +96,12 @@ public class PlayAdController {
     @GetMapping("/created/{userId}")
     public ResponseEntity<List<PlayAdResponseDto>> getCreatedPlayAdsByUser(@PathVariable("userId") Long userId) {
         return new ResponseEntity<>(playAdService.getCreatedPlayAdsByUser(userId), HttpStatus.OK);
+    }
+
+    @PutMapping("/remove")
+    public ResponseEntity<HttpStatus> removePlayerFromAd(@RequestBody PlayAdUserRequestDto playAdUserRequestDto) {
+        playAdService.removePlayerFromPlayAd(playAdUserRequestDto);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 

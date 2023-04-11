@@ -29,6 +29,7 @@ public class PlayAdMapper {
         responseDto.setGolfClubId(playAd.getGolfClub().getId());
         responseDto.setLocationId(playAd.getLocation().getId());
         responseDto.setCreatorUsername(playAd.getCreator().getUsername());
+        responseDto.setCreatorHandicap(playAd.getCreator().getHandicap());
         responseDto.setCourse(playAd.getCourse().getCourse());
         responseDto.setGolfClub(playAd.getGolfClub().getClub());
         responseDto.setLocation(playAd.getLocation().getDistrict());
@@ -36,6 +37,10 @@ public class PlayAdMapper {
         responseDto.setBookedPlayers(
                 bookedPlayersArray(playAd.getSlots())
         );
+        responseDto.setHasCar(playAd.isHasCar());
+        responseDto.setTeeTime(playAd.getTeeTime() == null ? "10:00" : playAd.getTeeTime().toString().substring(11, 16));
+        responseDto.setTeeTimeDate(playAd.getTeeTime() == null ? "2023-04-12" : playAd.getTeeTime().toString().substring(11, 16));
+        responseDto.setAverageHandicap(playAd.getHandicapAverage());
         return responseDto;
     }
 
@@ -53,12 +58,14 @@ public class PlayAdMapper {
                 BookedPlayersDto bookedPlayersDto = new BookedPlayersDto();
                 bookedPlayersDto.setUsername(player.getUsername());
                 bookedPlayersDto.setUserId(player.getId());
+                bookedPlayersDto.setHandicap(player.getHandicap());
                 bookedPlayersDto.setId(i);
                 bookedPlayers[i] = bookedPlayersDto;
             } else {
                 BookedPlayersDto bookedPlayersDto = new BookedPlayersDto();
                 bookedPlayersDto.setUsername("empty");
                 bookedPlayersDto.setUserId(0);
+                bookedPlayersDto.setHandicap(0);
                 bookedPlayersDto.setId(i);
                 bookedPlayers[i] = bookedPlayersDto;
             }
@@ -80,6 +87,9 @@ public class PlayAdMapper {
         AdReqResponseDto adReqResponseDto = new AdReqResponseDto();
         adReqResponseDto.setPlayAdRequestId(playAdRequest.getId());
         adReqResponseDto.setPlayAdId(playAdRequest.getPlayAd().getId());
+        adReqResponseDto.setPlayAdTime(playAdRequest.getPlayAd().getCreatedAt().toString().substring(0, 10));
+        adReqResponseDto.setPlayAdCourse(playAdRequest.getPlayAd().getCourse().getCourse());
+        adReqResponseDto.setPlayAdLocation(playAdRequest.getPlayAd().getLocation().getDistrict());
         adReqResponseDto.setRequesterId(playAdRequest.getRequester().getId());
         adReqResponseDto.setRequester(playAdRequest.getRequester().getUsername());
         adReqResponseDto.setRequesterHandicap(playAdRequest.getRequester().getHandicap());
