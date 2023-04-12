@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
+
 
 @Entity
 @Getter
@@ -21,7 +23,6 @@ public class PlayAdSlot {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private PlayAd playAd;
-
     private int slotIndex;
 
     public PlayAdSlot(PlayAd playAd, int i) {
@@ -33,8 +34,8 @@ public class PlayAdSlot {
         return this.player == null;
     }
 
-    public boolean hasPlayer(String username) {
-        return this.player.getUsername().equals(username);
+    public boolean hasPlayer(Long userId) {
+        return Objects.equals(this.player.getId(), userId);
     }
 
     public void removePlayer() {

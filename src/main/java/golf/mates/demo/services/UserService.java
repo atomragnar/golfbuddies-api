@@ -2,12 +2,14 @@ package golf.mates.demo.services;
 
 
 import golf.mates.demo.dtos.request.UserRegistrationDto;
+import golf.mates.demo.dtos.request.UserUpdateInfoDto;
 import golf.mates.demo.dtos.responses.UserInfoDto;
 
 import golf.mates.demo.entities.GenderEnum;
+import golf.mates.demo.entities.GolfClub;
+import golf.mates.demo.entities.Location;
 import golf.mates.demo.entities.User;
 import golf.mates.demo.mapper.UserMapper;
-import golf.mates.demo.repositories.LocationRepository;
 import golf.mates.demo.repositories.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -22,7 +24,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final LocationRepository locationRepository;
+    private final LocationService locationService;
+    private final GolfClubService golfClubService;
     private final UserRepository userRepository;
 
 
@@ -33,6 +36,17 @@ public class UserService {
     public void registerNewUser(UserRegistrationDto userRegistrationDto) {
         User user = UserMapper.toEntity(userRegistrationDto);
         userRepository.save(user);
+    }
+
+    public UserInfoDto upDateUserHandicapLocationEtc(UserUpdateInfoDto userUpdateInfoDto) {
+        User user = findUserById(userUpdateInfoDto.getUserId());
+        user.setHandicap(userUpdateInfoDto.getHandicap());
+        Location location = locationService.findById(userUpdateInfoDto.getLocationId());
+        user.setLocation(location);
+        GolfClub golfClub = golfClubService.findById(userUpdateInfoDto.getGolfClubId());
+        user.setGolfClub(golfClub);
+        user = userRepository.save(user);
+        return UserMapper.toInfoDto(user);
     }
 
     public User findUserById(Long id) {

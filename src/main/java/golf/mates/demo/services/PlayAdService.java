@@ -1,6 +1,7 @@
 package golf.mates.demo.services;
 
 import golf.mates.demo.dtos.request.PlayAdRequestDto;
+import golf.mates.demo.dtos.request.PlayAdUserRequestDto;
 import golf.mates.demo.dtos.responses.PlayAdResponseDto;
 import golf.mates.demo.entities.*;
 import golf.mates.demo.mapper.PlayAdMapper;
@@ -74,13 +75,19 @@ public class PlayAdService {
         return PlayAdMapper.toResponseDto(playAd);
     }
 
-    public void removePlayerFromPlayAd(long playAdId, String username) {
-        if (userService.existsByUsername(username)) {
-            PlayAd playAd = getPlayAdById(playAdId);
-            playAd.removePlayer(username);
-        } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
+    public void removePlayerFromPlayAd(PlayAdUserRequestDto playAdUserRequestDto) {
+        User user = userService.findUserById(playAdUserRequestDto.getUserId());
+        PlayAd playAd = getPlayAdById(playAdUserRequestDto.getPlayAdId());
+        playAd.removePlayer(user.getId());
+        playAdRepository.save(playAd);
+    }
+
+
+    public void removePlayerFromPlayAd(long playAdId, long userId) {
+        User user = userService.findUserById(userId);
+        PlayAd playAd = getPlayAdById(playAdId);
+        playAd.removePlayer(userId);
+        playAdRepository.save(playAd);
     }
 
     public void createNewPlayAd(PlayAdRequestDto playAdRequestDto) {
@@ -93,6 +100,8 @@ public class PlayAdService {
         playAd.setLocation(location);
         playAd.setGolfClub(golfClub);
         playAd.setCourse(golfCourse);
+        playAd.setTeeTime(playAdRequestDto.getTeeTime());
+        playAd.setHasCar(playAdRequestDto.isHasCar());
 
         playAdRepository.save(playAd);
 
@@ -118,7 +127,7 @@ public class PlayAdService {
         User user = userService.findUserById(userId);
         double end = user.getHandicap() + 8;
         double start = user.getHandicap() - 8;
-        List<PlayAd> playAdList = playAdRepository.findByCreator_HandicapBetween(start, end);
+        List<PlayAd> playAdList = playAdRepository.findByHandicapAverageBetween(start, end);
         return PlayAdMapper.toResponseDtoList(playAdList);
     }
 

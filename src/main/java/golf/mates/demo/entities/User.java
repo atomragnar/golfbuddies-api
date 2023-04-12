@@ -80,7 +80,7 @@ public class User {
         this.username = userRegistrationDto.getUsername();
         this.email = userRegistrationDto.getEmail();
         this.password = userRegistrationDto.getPassword();
-        this.handicap = 36.0;
+        this.handicap = 36;
     }
 
     public User(String email, String username, String password, Location location, GolfClub golfClub) {

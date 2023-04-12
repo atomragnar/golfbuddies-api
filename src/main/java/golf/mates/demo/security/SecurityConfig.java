@@ -39,7 +39,10 @@ import java.security.interfaces.RSAPublicKey;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -63,12 +66,22 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/signup", "/login").permitAll()
+                        .requestMatchers("/signup", "/login", "/api/golfclub/all", "/api/location/all").permitAll()
                         .requestMatchers(PathRequest.toH2Console()).permitAll()
                         .anyRequest()
-                        //.authenticated()
-                        .permitAll()
+                        .authenticated()
+                        //.permitAll()
                 )
+                .cors(cors -> cors.configurationSource(request -> {
+                    CorsConfiguration config = new CorsConfiguration();
+                    config.setAllowedOrigins(Arrays.asList("http://localhost:3000")); // Replace with your front-end application URL
+                    config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+                    config.setAllowedHeaders(Arrays.asList("*"));
+                    config.setAllowCredentials(true);
+                    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+                    source.registerCorsConfiguration("/**", config);
+                    return config;
+                }))
                 // TODO justera med endast origin för h2 senare.
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.

@@ -39,6 +39,10 @@ public interface PlayAdRepository extends JpaRepository<PlayAd, Long> {
     @Query("select p from PlayAd p inner join p.slots slots where slots.player.id = ?1")
     List<PlayAd> findBySlots_Player_Id(Long id);
 
+    List<PlayAd> findByHandicapAverageBetween(double handicapAverageStart, double handicapAverageEnd);
+
+
+
 
 
 
